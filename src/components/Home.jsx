@@ -1,9 +1,13 @@
-import React from 'react'
-
+import React from 'react';
+import LoginContext from './auth/logincontext';
+import { useContext } from 'react';
 const Home = () => {
+  const {displayName}=useContext(LoginContext);
   return (
-    <div>Home</div>
+    <div> 
+      <p>welcome {displayName&&displayName}</p>
+    </div>
   )
 }
 
-export default Home
+export default Home;
