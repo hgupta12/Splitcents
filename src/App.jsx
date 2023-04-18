@@ -20,9 +20,9 @@ export default function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login/>}/>
 
-        <Route path="/groups" element={<Groups />} />
+        <Route path="/group" element={<Groups />} />
 
-        <Route path = "/group/:gid" element = {<GroupLayout />} loader = {() => 123456789}>
+        <Route path = "/group/:gid" element = {<GroupLayout />}>
           <Route index element = {<Dues />} />
 
           <Route path = "members">

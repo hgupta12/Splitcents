@@ -1,4 +1,5 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app"
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
 
@@ -12,4 +13,6 @@ const firebaseConfig = {
   };
   
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig)
+export let db = getFirestore(app)
+export let user = "eFkY0StocISi7N9Nb4gh"
