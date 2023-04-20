@@ -1,26 +1,24 @@
 import {Routes, Route} from 'react-router-dom'
-import Login from './components/auth/Login'
-import Home from './components/Home'
 
 
 // Groups
+import MainLayout from './components/MainLayout'
 import GroupLayout from './components/groups/GroupLayout'
 import Groups from './components/groups/Groups'
 import Dues from './components/groups/Dues'
 import Members from './components/groups/Members'
+import Login from './components/auth/Login'
 import AddMember from './components/groups/AddMember'
 import Transact from './components/groups/Transact'
 
 
 export default function App() {
   return (
-    <>
-      <div className="text-3xl font-bold underline">Splitcents</div>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
+    <Routes>
+      <Route path="/" element = {<MainLayout />}>
+        <Route path = "/login" element = {<Login/>}/>
 
-        <Route path="/group" element={<Groups />} />
+        <Route path = "/group" element = {<Groups />} />
 
         <Route path = "/group/:gid" element = {<GroupLayout />}>
           <Route index element = {<Dues />} />
@@ -32,7 +30,7 @@ export default function App() {
 
           <Route path = ":uid" element = {<Transact />} />
         </Route>
-      </Routes>
-    </>
+      </Route>
+    </Routes>
   )
 }
