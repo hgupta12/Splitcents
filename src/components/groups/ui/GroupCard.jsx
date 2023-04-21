@@ -1,5 +1,6 @@
 import React from "react"
 import { user } from "../../../firebase"
+import { Link } from "react-router-dom"
 
 export default function GroupCard ({ id, name, graph}) {
 
@@ -13,11 +14,11 @@ export default function GroupCard ({ id, name, graph}) {
 
     return (
         <div>
-            <a href={`./group/${id}`}>
+            <Link to={`./group/${id}`}>
                 <h3>
                     {name}
                 </h3>
-            </a>
+            </Link>
             <p>
                 {due > 0 && `you owe ${due}`}
                 {due == 0 && `no dues`}

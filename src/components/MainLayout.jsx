@@ -1,5 +1,5 @@
 import React from "react"
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 
 export default function MainLayout () {
     return (
@@ -13,10 +13,10 @@ export default function MainLayout () {
             </div>
             
             <div className="h-12 bg-slate-700 text-white flex justify-evenly">
-                <a href="/group">groups</a>
-                <a href="/friends">friends</a>
-                <a href="/history">history</a>
-                <a href="/profile">profile</a>
+                <Link to="/group">groups</Link>
+                <Link to="/friends">friends</Link>
+                <Link to="/history">history</Link>
+                <Link to="/profile">profile</Link>
             </div>
         </div>
     )
