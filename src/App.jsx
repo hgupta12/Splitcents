@@ -1,6 +1,7 @@
 import {Routes, Route, Navigate} from 'react-router-dom'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
+import Friends from './components/Friends'
 import Home from './components/Home'
 import { useUser } from './context/UserContext'
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<RequireAuth><Home/></RequireAuth>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/signup" element={<Signup/>}/>
+        <Route path="/friends" element={<RequireAuth><Friends/></RequireAuth>}/>
       </Routes>
     </>
   )
