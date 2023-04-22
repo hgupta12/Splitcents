@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Outlet, useParams } from "react-router-dom"
 
 import { db } from "../../firebase"
@@ -10,9 +10,11 @@ export default function GroupLayout () {
 
     // get the group data and set it here
     let [ group, setGroup ] = useState({})
-
+useEffect(()=>{
     let q = getDoc(doc(db, `groups/${gid}`))
     q.then(doc => setGroup({ ...doc.data(), id: gid}))
+},[])
+    
 
     return (
         <>
