@@ -14,7 +14,7 @@ export default function GroupCard ({ id, name, graph}) {
 
     return (
         <div>
-            <Link to={`./group/${id}`}>
+            <Link to={`/group/${id}`}>
                 <h3>
                     {name}
                 </h3>
