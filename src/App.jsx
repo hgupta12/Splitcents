@@ -10,6 +10,7 @@ import Members from './components/groups/Members'
 import Login from './components/auth/Login'
 import AddMember from './components/groups/AddMember'
 import Transact from './components/groups/Transact'
+import AddExpenses from './components/groups/AddExpenses'
 
 
 export default function App() {
@@ -22,11 +23,15 @@ export default function App() {
 
         <Route path = "/group/:gid" element = {<GroupLayout />}>
           <Route index element = {<Dues />} />
+          <Route path='addexpense'>
+            <Route index element ={<AddExpenses/>}/>
+          </Route>
 
           <Route path = "members">
             <Route index element = {<Members />} />
             <Route path = "add" element = {<AddMember />} />
           </Route>
+          
 
           <Route path = ":uid" element = {<Transact />} />
         </Route>
