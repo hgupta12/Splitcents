@@ -134,8 +134,9 @@ export default function AddExpenses(){
             })
             const updatedGraphandGroup=info
             updatedGraphandGroup.graph=graph;
-            console.log('updated')
+            //delete updatedGraphandGroup.id;
             await updateDoc(doc(db,"groups",group.id),updatedGraphandGroup)
+            console.log('updated')
             alert("Added")
         window.location= `/group/${group.id}`
         }catch(err){console.log(err)}
