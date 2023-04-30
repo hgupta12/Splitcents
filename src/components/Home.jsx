@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 const Home = () => {
-const [access,setAccess]=useState(null);
+const [credentials,setCredentials]=useState(null);
 useEffect(()=>{
   const unsubscribe=onAuthStateChanged(auth,(data)=>{
     if(data)
-    setAccess(data);
+setCredentials(data);
     else
     {
-setAccess(null);
+setCredentials(null);
     }
 
   });
@@ -20,17 +20,16 @@ setAccess(null);
 
 const handlesignout=()=>{
   signOut(auth).then(()=>{
-    setAccess(null);
+    setCredentials(null);
   }).catch((error)=>{
     console.log(error);
   });
 
 }
-if(access){
+if(credentials){
   return (
     <>
-    <div> WELCOME TO SPLITCENTS
-      {console.log(access)}
+    <div> WELCOME TO SPLITCENTS 
       < div className ='flex justify-left'>
       <button  className='bg-green-600 hover:bg-green-700 text-white-font py-2 px-4 rounded'onClick={handlesignout}>SIGN OUT</button></div>
     </div>
