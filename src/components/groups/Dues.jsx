@@ -7,7 +7,7 @@ function Dues () {
     let [ group, setGroup ] = useOutletContext()
     var filteredGroupData=""
     const [info,setInfo]=useState({});
-    const usid="tQkhviaGM7HlofjT1QCn"
+    const usid=user
     const [m1,setMabc]=useState({})
     const [info1,setInfo1]=useState([])
     
@@ -47,7 +47,7 @@ function Dues () {
         <>
         
          <br></br>
-         <>{y.map(ele =>info[ele]>0 ?<p></p>: info[ele]<0 ?<div> <h2>{m1[ele]}</h2><p>You owe {info[ele]*-1}</p><button>Pay</button></div>:<p></p>)}</>
+         <>{y.map(ele =>info[ele]>=0 ?<p></p>: <div> <h2>{m1[ele]}</h2><p>You owe {info[ele]*-1}</p><button>Pay</button></div>)}</>
          </>
     )
 }
