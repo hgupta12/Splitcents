@@ -29,7 +29,7 @@ export default function Transact () {
 
         await addDoc(collection(db, "groups", group.id, "transactions"), {
             amount: group.graph[user][uid],
-            date: new Date(),
+            timestamp: new Date(),
             payer_id: user,
             payee_id: member.id
         })

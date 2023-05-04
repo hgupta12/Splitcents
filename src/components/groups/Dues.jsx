@@ -47,7 +47,7 @@ function Dues () {
         <>
         
          <br></br>
-         <>{y.map(ele =>info[ele]>=0 ?<p></p>: <div> <h2>{m1[ele]}</h2><p>You owe {info[ele]*-1}</p><button>Pay</button></div>)}</>
+         <>{y.map(ele =>info[ele]>0 ? <div> <h2>{m1[ele]}</h2><p>You owe {info[ele]}</p><a href={`/group/${group.id}/settle/${ele}`}>Pay</a></div> : <p></p>)}</>
          </>
     )
 }
