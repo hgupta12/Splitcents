@@ -1,6 +1,7 @@
 import {Routes, Route,Navigate} from 'react-router-dom'
 import Login from './components/auth/Login'
 import Home from './components/Home';
+import Signup from './components/auth/Signup';
 import {useContext} from 'react';
 import { AuthContext } from './context/Authcontext';
 function App() {
@@ -20,12 +21,16 @@ return (
                         <Home />
                       </RequireAuth>}/>
       
-                
-       <Route path="/login" element={
+                      <Route path="/login" element={
        <IfnotAuth>
        <Login/>
       </IfnotAuth>}/>
-       </Routes>
+
+       <Route path="/signup" element={
+       <IfnotAuth>
+       <Signup/>
+      </IfnotAuth>}/>    
+      </Routes>
 
  </>
   
