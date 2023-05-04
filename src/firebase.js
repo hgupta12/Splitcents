@@ -15,4 +15,4 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig)
 export let db = getFirestore(app)
-export let user = "eFkY0StocISi7N9Nb4gh"
+export let user = "uibQNnZRp7TrwlZLE8AM"

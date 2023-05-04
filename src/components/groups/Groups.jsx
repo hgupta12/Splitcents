@@ -7,16 +7,16 @@ import GroupCard from './ui/GroupCard'
 export default function Groups () {
     let [ groups, setGroups ] = useState([])
     let [ loading, setLoading ] = useState(true)
-
-    useEffect(() => {
+    useEffect(()=>{
         let q = query(collection(db, "groups"), where("members", "array-contains", user))
         getDocs(q).then(qs => {
-            let docs = []
-            qs.forEach(doc => docs.push({...doc.data(), id: doc.id}))
-            setGroups(docs)
-            setLoading(false)
-        })
-    }, [])
+        let docs = []
+        qs.forEach(doc => docs.push({...doc.data(), id: doc.id}))
+        setGroups(docs)
+        setLoading(false)
+    })
+    },[])
+    
     
     return (
         <div>

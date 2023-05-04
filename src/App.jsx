@@ -10,6 +10,9 @@ import Members from './components/groups/Members'
 import Login from './components/auth/Login'
 import AddMember from './components/groups/AddMember'
 import Transact from './components/groups/Transact'
+import AddExpenses from './components/groups/AddExpenses'
+import CreateGroup from './components/groups/CreateGroup'
+import History from './components/groups/History'
 
 
 // Friends
@@ -25,16 +28,26 @@ export default function App() {
         <Route path = "/login" element = {<Login/>}/>
 
         <Route path = "/group" element = {<Groups />} />
+        <Route path='/creategroup' element={<CreateGroup/>} />
 
         <Route path = "/group/:gid" element = {<GroupLayout />}>
-          <Route index element = {<Dues />} />
+
+          <Route index element = {<History />} />
+
+          <Route path = "settle">
+            <Route index element = {<Dues />} />
+            <Route path = ":uid" element = {<Transact />} />
+          </Route>
+
+          <Route path='addexpense'>
+            <Route index element ={<AddExpenses/>}/>
+          </Route>
 
           <Route path = "members">
             <Route index element = {<Members />} />
             <Route path = "add" element = {<AddMember />} />
           </Route>
 
-          <Route path = ":uid" element = {<Transact />} />
         </Route>
 
 
