@@ -3,25 +3,22 @@ import { signInWithPopup } from 'firebase/auth';
 import {auth,provider} from '../../firebase.js';
 import { useContext, } from 'react';
 import { useNavigate,Navigate } from 'react-router-dom';
-import { AuthContext } from './AuthContext.jsx';
+import { AuthContext } from '../../context/Authcontext.jsx';
 const Login = () => {
   
 const navitage = useNavigate();
 const {dispatch} = useContext(AuthContext);
   const handleLoginWithGoogle= async ()=>{
-    try{
-const result=await signInWithPopup(auth,provider);
-const user = result.user;
+await signInWithPopup(auth,provider).then((userCredential)=>{
+const user = userCredential.user;
        dispatch({type:"LOGIN", payload:user});
        navitage("/");
-        <Navigate to="/" />;
-        console.log(result.user);
-
- }
-    catch(err){
+       console.log(userCredential.user);
+}).catch((err)=>{
       console.log(err.message);
-    }
-  }
+    });
+  };
+
   return (
     <div className='flex justify-center'>
       <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center focus:outline-none focus:shadow-outline"

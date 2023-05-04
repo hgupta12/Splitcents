@@ -1,32 +1,25 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useContext} from 'react';
 import { auth } from '../firebase';
 import { Link } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
-const Home = () => {
-const [credentials,setCredentials]=useState(null);
-useEffect(()=>{
-  const unsubscribe=onAuthStateChanged(auth,(data)=>{
-    if(data)
-setCredentials(data);
-    else
-    {
-setCredentials(null);
-    }
+import { AuthContext } from '../context/Authcontext';
+import {useNavigate,Navigate} from 'react-router-dom'
+const Home =() =>{
+const navigate=useNavigate();
 
-  });
-  return unsubscribe;
-},[]);
-
+const {dispatch}=useContext(AuthContext);
 const handlesignout=()=>{
   signOut(auth).then(()=>{
-    setCredentials(null);
+    dispatch({type:"LOGOUT",payload:null});
+    navigate("/login");
   }).catch((error)=>{
     console.log(error);
   });
 
 }
-if(credentials){
+
+
   return (
     <>
     <div> WELCOME TO SPLITCENTS 
@@ -35,16 +28,6 @@ if(credentials){
     </div>
     </>
   )
-}
-else
-{
-  return(
-    <div className='flex justify-center'>
-<Link to='/login'><button 
-     className='bg-green-700 hover:bg-green-800 text-white-font py-2 px-4 rounded'>Login to continue</button></Link>
-</div>
-)
-}
 }
 
 export default Home;
