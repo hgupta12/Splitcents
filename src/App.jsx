@@ -13,8 +13,10 @@ function App() {
     return currentUser ?  <Navigate to="/" />:children;};
 
 return (
-    <>
-    <div className="text-3xl font-bold underline">Splitcents</div>
+    < div className='relative'>
+    < div className="">
+    <div className="font-sans font-family:Roboto font-normal font-bold text-3xl">Splitcents</div>
+    </div>
       <Routes>
       <Route path='/' element={
                         <RequireAuth>
@@ -32,7 +34,7 @@ return (
       </IfnotAuth>}/>    
       </Routes>
 
- </>
+ </div>
   
   )
 }
