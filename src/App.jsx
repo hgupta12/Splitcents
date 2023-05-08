@@ -45,7 +45,6 @@ return (
         <Route path = "/group" element = {<Groups />} />
         <Route path='/creategroup' element={<CreateGroup/>} />
         <Route path = "/group/:gid" element = {<GroupLayout />}>
-          <Route index element = {<History />} />
           <Route path = "settle">
             <Route index element = {<Dues />} />
             <Route path = ":uid" element = {<Transact />} />
