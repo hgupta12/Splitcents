@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import ModalChangePayer from "./ModalChangePayer";
 import ModalAddMember from "./ModalAddMembers";
 import { useOutletContext } from "react-router-dom"
-import { db } from "../../firebase";
+import { db,user } from "../../firebase";
 
 
 export default function AddExpenses(){
-    const uid="Tae2WO34ARrcQowOG8vt"
+    const uid=user
     const [amout,setAmount]=useState(0)
     const [description,setDescription]=useState("")
     const [payer,setPayer]=useState(uid)

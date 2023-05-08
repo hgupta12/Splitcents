@@ -1,10 +1,10 @@
 import React from "react";
 import { collection, query,where,getDocs,getDoc,doc,updateDoc, addDoc} from "firebase/firestore";
-import { db } from "../../firebase";
+import { db,user } from "../../firebase";
 import { useState ,useEffect} from "react"
 
 function CreateGroup(){
-    const user='tQkhviaGM7HlofjT1QCn'
+    const user='4h7cUp0PKRQlc2PVsdbfGcL5Lw22'
     const [groupName,setGroupName]=useState('')
     const [friends,setFriends]=useState([])
     const [m1,setMabc]=useState({})
@@ -13,7 +13,8 @@ function CreateGroup(){
     const [selected1,setSelected1]=useState([user]);
     const [input,setInput]=useState("");
     const [loading,setLoading]=useState(true)
-    
+    const [loading1,setLoading1]=useState(true)
+
     function ChangeGroupName(e){
         setGroupName(e)
     }
@@ -29,8 +30,9 @@ function CreateGroup(){
                         if(k !== user){friends1.push(k)}
                     })
                 })
-
+                console.log(friends1)
                 setFriends(friends1);
+                setLoading1(false)
                 
                 //console.log(friends,"f")
                 
@@ -40,8 +42,9 @@ function CreateGroup(){
     },[])
     useEffect(()=>{const getUser=async()=>{
         try{    const userDocs=await Promise.all(friends.map(k=>getDoc(doc(db,"users",k))))
-                //console.log(userDocs,'users')
+                
                 userDocs.map((k)=>{
+                    console.log(k.data())
                     const mt=m1;
                     const mt1=m2;
                     mt[k.id]=k.data().name
@@ -65,7 +68,7 @@ function CreateGroup(){
         }
         getUser()
         
-    },[friends])
+    },[loading1])
     /*
     useEffect(()=>{
         const f=friends

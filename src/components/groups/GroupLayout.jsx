@@ -4,6 +4,8 @@ import { Outlet, useParams } from "react-router-dom"
 import { db } from "../../firebase"
 import { doc, getDoc } from "firebase/firestore"
 import Dues from "./Dues"
+import ModalAddExpenses from "./ModalAddExpenses"
+import AddExpenses from "./AddExpenses"
 
 
 export default function GroupLayout () {
@@ -11,6 +13,7 @@ export default function GroupLayout () {
 
     // get the group data and set it here
     let [ group, setGroup ] = useState({})
+    const [open,setOpen]=useState(false)
     const [loading,setLoading]=useState(true)
 useEffect(()=>{
     let q = getDoc(doc(db, `groups/${gid}`))
@@ -26,7 +29,11 @@ useEffect(()=>{
             <div className="flex m-10 justify-between border-b-2 border-blue-400 pb-5">
                 <h2 className="text-4xl p-3 font-semibold">{group.name}</h2>
                 <div>
-                    <button className="mx-2 mr-5 bg-cyan-300 p-3 rounded-2xl"><span>+</span> Add Expense</button>
+                    <button className="mx-2 mr-5 bg-cyan-300 p-3 rounded-2xl"
+                    onClick={()=>setOpen(true)}><span>+</span> Add Expense</button>
+                    <ModalAddExpenses open={open} onClose={()=>setOpen(false)}>
+                        
+                    </ModalAddExpenses>
                     <button className="mx-2 border-2 p-3 rounded-2xl border-black">Group Memebers</button>
                 </div>
             </div>
