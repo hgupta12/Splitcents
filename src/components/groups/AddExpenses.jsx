@@ -58,8 +58,16 @@ export default function AddExpenses(props){
                     setMabcd(mt1)
                     setMabc(mt)
                 })
-        console.log(m1,'m1')
-        setLoading(false)
+            
+            setLoading(false)
+            const addnewinput=[]
+        const y1=Object.keys(m1);
+        y1.forEach((k)=>{
+            
+            if(m1[k].includes(addMemberInput) && !(selectedToAddMembersList.includes(k)) && k!==payer){
+                    addnewinput.push(k)
+            }
+        });setAddMembersResult(addnewinput)
         }catch(err){console.error(err)}
         }
         getUser()
@@ -77,9 +85,9 @@ export default function AddExpenses(props){
     useEffect(()=>{
         const y=Object.keys(m1)
         y.map((k)=>{
-        if(m1[k].includes(newPayer) && newPayer!=="" && k!==payer && !(selectedToAddMembersList.includes(k))){xnew.push(k)}
+        if(m1[k].includes(newPayer) && k!==payer && !(selectedToAddMembersList.includes(k))){xnew.push(k)}
     })
-    setNewPayerList(xnew);},[newPayer])
+    setNewPayerList(xnew);},[newPayer,selectedToAddMembersList])
     
     function addMemberfunc(inputnew){
         
@@ -90,20 +98,12 @@ export default function AddExpenses(props){
         const addnewinput=[]
         const y=Object.keys(m1);
         y.forEach((k)=>{
-            var z=0
-            selectedToAddMembersList.map(l=>{
-                if(l === k){z=1}
-            })
-            if(addMemberInput === ""){
-
-            }
-            else{
-                if(m1[k].includes(addMemberInput) && z!==1 && k!==payer){
+            
+            if(m1[k].includes(addMemberInput) && !(selectedToAddMembersList.includes(k)) && k!==payer){
                     addnewinput.push(k)
-                }
             }
         });setAddMembersResult(addnewinput)
-    },[addMemberInput])
+    },[addMemberInput,selectedToAddMembersList,payer])
 
     
     function AddMembersToList(k){
@@ -187,12 +187,12 @@ export default function AddExpenses(props){
                 <input placeholder="Amount..." className=" border-b-2 border-blue-500  outline-none " onChange={(e)=>setAmount(Number(e.target.value))}/>
                 </div>
                 <div className="mx-6 my-4">
-                    <div className="text-lg flex items-center space-x-3"><span className="text-xl pr-3">Payer : </span><img className="inline w-20 border-2 border-black rounded-full" src={m2[payer]}/> <span>{m1[payer]}</span>
+                    <div className="text-lg flex items-center space-x-3"><span className="text-xl pr-3">Payer : </span><img className="inline w-16 border-2 border-black rounded-full" src={m2[payer]}/> <span>{m1[payer]}</span>
                     <button onClick={()=>setChangePayer(true)}><span class="material-icons text-4xl text-blue-500">edit</span></button></div>
                     
                     <ModalChangePayer open={changePayer}>
                         <input placeholder="New Payer....." className="border-b-2 border-blue-500  outline-none " onChange={(e)=>changePayerfunc(e.target.value)}/>
-                        <div>{newPayerList.map((k)=>{return(<div className="text-lg flex items-center space-x-3 my-3"><img className="inline w-20 border-2 border-black rounded-full" src={m2[k]}/><h5>{m1[k]}</h5><button onClick={()=>SetNewPayerfunc(k)}><span class="material-icons text-4xl text-blue-500 ">swap_horiz</span></button></div>);})}</div>
+                        <div>{newPayerList.map((k)=>{return(<div className="text-lg flex items-center space-x-3 my-3"><img className="inline w-16 border-2 border-black rounded-full" src={m2[k]}/><h5>{m1[k]}</h5><button onClick={()=>SetNewPayerfunc(k)}><span class="material-icons text-4xl text-blue-500 ">swap_horiz</span></button></div>);})}</div>
                     </ModalChangePayer>
                 </div>
                 <div className="grid grid-cols-2 justify-items-center">
@@ -206,7 +206,7 @@ export default function AddExpenses(props){
                         
                         <input placeholder="New Member....." className=" border-b-2 border-blue-500  outline-none " value={addMemberInput} onChange={(e)=>addMemberfunc(e.target.value)}/>
                         <div className="ml-5">
-                            {addMembersResult.map((k)=>{return(<div className="flex items-center my-2 space-x-6"><img className="inline w-20 border-2 rounded-full" src={m2[k]}/><div className="text-lg">{m1[k]}</div><button onClick={()=>AddMembersToList(k)}><span class="material-icons text-3xl text-green-400">person_add</span></button></div>);})}
+                            {addMembersResult.map((k)=>{return(<div className="flex items-center my-2 space-x-6"><img className="inline w-16 border-2 rounded-full" src={m2[k]}/><div className="text-lg">{m1[k]}</div><button onClick={()=>AddMembersToList(k)}><span class="material-icons text-3xl text-green-400">person_add</span></button></div>);})}
                         </div>
                     </ModalAddMember>
                     
@@ -214,7 +214,7 @@ export default function AddExpenses(props){
                     <div>
                     <h2 className="text-xl underline text-green-500 mb-10 mt-5">Selected Members</h2>
                         <div>
-                        {selectedToAddMembersList.map((k)=>{return(<div className="flex items-center space-x-6 my-2"><img className="inline w-20 border-2 rounded-full" src={m2[k]}/><h5 className="text-lg">{m1[k]}</h5><button onClick={()=>RemoveFromSelected(k)}><span class="material-icons text-3xl text-red-400">person_remove</span></button></div>)}) }
+                        {selectedToAddMembersList.map((k)=>{return(<div className="flex items-center space-x-6 my-2"><img className="inline w-16 border-2 rounded-full" src={m2[k]}/><h5 className="text-lg">{m1[k]}</h5><button onClick={()=>RemoveFromSelected(k)}><span class="material-icons text-3xl text-red-400">person_remove</span></button></div>)}) }
 
                         </div>
                     </div>

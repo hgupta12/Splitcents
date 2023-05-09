@@ -56,7 +56,7 @@ export default function History (props) {
                             <div className="flex items-center space-x-6">
                                 <span>{k.type==="expense"?<span class="material-icons text-3xl">groups</span>:<span class="material-icons text-3xl">payments</span>}</span>
                                 <div className="text-2xl">{k.type==="expense"?k.description:""}</div> 
-                                <div><img src={m2[k.payer_id]} className="inline w-20 border-2 rounded-full "/><div className="text-xl">{m1[k.payer_id]}</div> </div> 
+                                <div><img src={m2[k.payer_id]} className="inline w-16 border-2 rounded-full "/><div className="text-xl">{m1[k.payer_id]}</div> </div> 
                                 <span class="material-icons text-4xl text-black">trending_flat</span>
                                     {/*k.type==="expense"?<div>
                                     {k.participants.map((i)=>{
@@ -67,7 +67,7 @@ export default function History (props) {
                                         <p className="text-xl">{k.participants.length} {k.participants.length===1? "Person":"People"}</p>
                                         :
                                         <><div>
-                                        <img src={m2[k.payee_id]} className="inline w-20 border-2 rounded-full " />
+                                        <img src={m2[k.payee_id]} className="inline w-16 border-2 rounded-full " />
                                         <p className="text-xl">{m1[k.payee_id]}</p>
                                         </div>
                                         </>

@@ -60,11 +60,11 @@ export default function Transact (props) {
         <>
             <div className="bg-white flex flex-col items-center rounded-3xl">
                 <h2 className="m-10 text-3xl font-semibold ">Pay back</h2>
-                <img src={m2[uid]} className="p-0 w-72 border-2 rounded-full mx-10 border-black"/>
+                <img src={m2[uid]} className="border-2 rounded-full mx-10 border-black w-36"/>
                 <p className="text-3xl mb-10">{m1[uid]}</p>
                 <div className="flex items-center">
-                <span class="material-icons text-7xl">currency_rupee</span>
-                <p className="text-7xl">{group.id && group.graph[user][uid]}</p>
+                <span class="material-icons text-5xl">currency_rupee</span>
+                <p className="text-5xl">{group.id && group.graph[user][uid]}</p>
                 </div>
                 <button onClick = {handleTransaction} className="m-5 rounded-lg flex items-center bg-cyan-900 p-2"><span class="material-icons text-4xl text-white pr-3">payments</span><span className="text-lg text-white"> Pay</span></button>
             </div>
