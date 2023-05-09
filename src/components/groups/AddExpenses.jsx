@@ -129,14 +129,15 @@ export default function AddExpenses(props){
     async function SubmitExpense(k){
         try{
         await addDoc(collection(db,"expenses"),k)
+        console.log(k)
         }catch(err){console.log(err)}
     }
     async function UpdateGraph(participants){
         try{const graph=info.graph
             const due_share=Math.floor(amout/(selectedToAddMembersList.length+1))
             participants.map((k)=>{
-                graph[payer][k.id]=graph[payer][k.id]+due_share
-                graph[k.id][payer]=graph[k.id][payer]-due_share
+                graph[payer][k.id]=graph[payer][k.id]-due_share
+                graph[k.id][payer]=graph[k.id][payer]+due_share
             })
             const updatedGraphandGroup=info
             updatedGraphandGroup.graph=graph;
@@ -178,11 +179,11 @@ export default function AddExpenses(props){
         <div className="bg-white rounded-2xl">
                 <h1 className="text-3xl m-4 font-semibold text-center">New Expense</h1>
                 <div className="my-5 mx-6">
-                <label className="text-xl pr-3">Description :</label>
+                
                 <input placeholder="Description..." className=" border-b-2 border-blue-500  outline-none" onChange={(e)=>setDescription(e.target.value)}/>
                 </div>
                 <div className="my-5 mx-6">
-                <label className="text-xl pr-3">Amount :</label>
+                
                 <input placeholder="Amount..." className=" border-b-2 border-blue-500  outline-none " onChange={(e)=>setAmount(Number(e.target.value))}/>
                 </div>
                 <div className="mx-6 my-4">
@@ -202,7 +203,7 @@ export default function AddExpenses(props){
                         
                     
                     <ModalAddMember open={addMember}>
-                        <lable className="text-lg pr-3">Member Name :</lable>
+                        
                         <input placeholder="New Member....." className=" border-b-2 border-blue-500  outline-none " value={addMemberInput} onChange={(e)=>addMemberfunc(e.target.value)}/>
                         <div className="ml-5">
                             {addMembersResult.map((k)=>{return(<div className="flex items-center my-2 space-x-6"><img className="inline w-20 border-2 rounded-full" src={m2[k]}/><div className="text-lg">{m1[k]}</div><button onClick={()=>AddMembersToList(k)}><span class="material-icons text-3xl text-green-400">person_add</span></button></div>);})}
@@ -220,9 +221,14 @@ export default function AddExpenses(props){
                    
                 </div>
                 <div className="flex justify-center m-10">
-                <button onClick={()=>AddFinalExpense()} className="rounded-3xl flex items-center bg-cyan-900 p-2"><span class="material-icons text-4xl text-white">add</span> <span className="text-lg text-white">Add Expense</span></button>
+                <button onClick={()=>AddFinalExpense()} className="rounded-lg flex items-center bg-cyan-900 p-2"><span class="material-icons text-4xl text-white">add</span> <span className="text-lg text-white">Add Expense</span></button>
                 </div>
             </div>
             </>
     );
 }
+/*
+<label className="text-xl pr-3">Description :</label>
+<label className="text-xl pr-3">Amount :</label>
+<lable className="text-lg pr-3">Member Name :</lable>
+*/
