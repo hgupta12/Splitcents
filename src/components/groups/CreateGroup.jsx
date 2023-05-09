@@ -47,7 +47,7 @@ function CreateGroup(){
                     console.log(k.data())
                     const mt=m1;
                     const mt1=m2;
-                    mt[k.id]=k.data().name
+                    mt[k.id]=k.data().Name
                     mt1[k.id]=k.data().profile_pic
                     setMabc(mt)
                     setMabcd(mt1)
@@ -106,7 +106,15 @@ function CreateGroup(){
     }
     function Display123(){
         
-        return(<><h3 className="text-lg justify-center border-b-2 border-green-400 mb-8">Selected Members</h3><div className="flex p-3 space-x-6"><img src={m2[user]} className="inline w-10 border-2 rounded-2xl "/><p>{m1[user]}</p></div><div>{selected1.map((k) => k===user? <p></p>:<div className="flex space-x-6"><img src={m2[k]} className="inline w-10 border-2 rounded-2xl "/><h5>{m1[k]}</h5><button className="text-4xl text-red-600" onClick={()=> removeFromSelected(k)}>-</button></div>)}</div></>);
+        return(<><h3 className="text-lg justify-center border-b-2 border-green-400 mb-8">Selected Members</h3>
+        <div className="flex p-3 space-x-6 items-center"><img src={m2[user]} className="inline w-20 border-2 rounded-full "/><p className="text-lg">{m1[user]}</p>
+        </div>
+        <div>{selected1.map((k) => k===user? <p></p>:
+            <div className="flex space-x-6 items-center">
+                <img src={m2[k]} className="inline w-20 border-2 rounded-full "/>
+                <h5 className="text-lg">{m1[k]}</h5>
+                <button className="text-4xl text-red-600" onClick={()=> removeFromSelected(k)}><span class="material-icons">person_remove</span></button>
+            </div>)}</div></>);
     }
     function addToSelected(k){
         const x4=selected1
@@ -151,7 +159,14 @@ function CreateGroup(){
                     </div>
                 </div>
                 <div className="mx-10 ">{results.map((k) => 
-                <div className="flex space-x-6 p-3"><div><img src={m2[k]} className="inline w-10 border-2 rounded-2xl "/></div><p>{m1[k]}</p><button onClick={() => addToSelected(k)} className="text-4xl text-green-500 ">+</button></div>)}
+                <div className="flex space-x-6 p-3 items-center">
+                    <div>
+                        <img src={m2[k]} className="inline w-20 border-2 rounded-full "/>
+                    </div>
+                    <p>{m1[k]}</p>
+                    <button onClick={() => addToSelected(k)} className="text-4xl text-green-500 ">
+                        <span class="material-icons">person_add</span>
+                    </button></div>)}
                 </div>
                 </div>
                 <div className="my-8  ">
@@ -161,7 +176,7 @@ function CreateGroup(){
             
         
         <div className="text-center my-5">
-            <button className="text-lg bg-cyan-300 px-3 py-1 font-sans rounded-2xl" onClick={()=> CreateGroups()}>Create Group</button>   
+            <button className="felx items-center text-lg bg-cyan-900 px-3 py-1 font-sans rounded-lg text-white text-center" onClick={()=> CreateGroups()}><span class="material-icons pr-3">groups</span><span>Create Group</span></button>   
         </div>
         </>
     )
