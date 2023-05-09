@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { db,user } from '../../firebase'
 
 
 export default function History (props) {
@@ -37,42 +37,59 @@ export default function History (props) {
             historyDocs.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds)
 
             setHistory(historyDocs)
-            setLoading(flase)
+            setLoading(false)
 
         })()
         
     }, [])
-    
+    let flag=0
+    let pflag=0
     return (
-        <>
-            <h1>History</h1>
+        <>  
+            
+            <h1 className="invisible">History</h1>
             <div>
             {   
                 history.map((k) => {
                     return (
-                        <div key = {k.id} className="flex justify-between">
-                            <div className="flex">
-                                <span className="px-1">{k.type}</span>
-                                <h3>{k.type==="expense"?k.description:""}</h3> 
-                                {m1[k.payer_id]} <img src={m2[k.payer_id]} className="inline w-20 border-2 rounded-full "/> 
-                                {k.type==="expense"?<p>Paid for</p>:<p>Paid to</p>} 
+                        <div key = {k.id} className="flex justify-between mx-16 border-b-2 border-blue-400 py-3">
+                            <div className="flex items-center space-x-6">
+                                <span>{k.type==="expense"?<span class="material-icons text-3xl">groups</span>:<span class="material-icons text-3xl">payments</span>}</span>
+                                <div className="text-2xl">{k.type==="expense"?k.description:""}</div> 
+                                <div><img src={m2[k.payer_id]} className="inline w-20 border-2 rounded-full "/><div className="text-xl">{m1[k.payer_id]}</div> </div> 
+                                <span class="material-icons text-4xl text-black">trending_flat</span>
                                     {/*k.type==="expense"?<div>
                                     {k.participants.map((i)=>{
                                         return(<><p>{m1[i.id]}</p><img src={m2[i.id]} className="inline w-20 bg-white" /></> )
                                     })}
                                 </div>:<p>{m1[k.payee_id]}</p>*/
                                     k.type=='expense'?
-                                        <p>{k.participants.length} People</p>
+                                        <p className="text-xl">{k.participants.length} {k.participants.length===1? "Person":"People"}</p>
                                         :
-                                        <><p>{m1[k.payee_id]}</p>
-                                        <img src={m2[k.payee_id]} className="inline w-20 border-2 rounded-full " /></>
+                                        <><div>
+                                        <img src={m2[k.payee_id]} className="inline w-20 border-2 rounded-full " />
+                                        <p className="text-xl">{m1[k.payee_id]}</p>
+                                        </div>
+                                        </>
                                     }   
-                                {k.amount} 
+                                <div className="text-3xl text-green-500"><span class="material-icons md-36 text-green-400">currency_rupee</span>{k.amount}</div>
+                                {k.type==="expense"?
+                                    k.participants.map(i=>{
+                                        i.id===user?flag++:null
+                                    })
+                                    :
+                                    null
+                                }
+                                {flag!==pflag?
+                                    <p className="text-blue-500">You are included</p>:<p>{null}</p>
+                                }
+                                <div className="invisible">{pflag=flag}</div>
+                            
                             </div> 
-                        <div className="flex flex-col">
-                            <div>{month[(new Date(k.timestamp.seconds * 1000)).getMonth()]}</div>
-                            <div>{(new Date(k.timestamp.seconds * 1000)).getDate()}</div> 
-                            <div>{(new Date(k.timestamp.seconds * 1000)).getFullYear()}</div>
+                        <div className="flex flex-col mr-10">
+                            <div className="text-lg">{month[(new Date(k.timestamp.seconds * 1000)).getMonth()]}</div>
+                            <div className="text-2xl">{(new Date(k.timestamp.seconds * 1000)).getDate()}</div> 
+                            <div className="text-lg">{(new Date(k.timestamp.seconds * 1000)).getFullYear()}</div>
                         </div>
                     </div>
                     )

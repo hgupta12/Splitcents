@@ -32,7 +32,7 @@ useEffect(()=>{
                     <button className="mx-2 mr-5 bg-cyan-300 p-3 rounded-2xl"
                     onClick={()=>setOpen(true)}><span>+</span> Add Expense</button>
                     <ModalAddExpenses open={open} onClose={()=>setOpen(false)}>
-                        
+                        <AddExpenses group={group}/>
                     </ModalAddExpenses>
                     <button className="mx-2 border-2 p-3 rounded-2xl border-black">Group Memebers</button>
                 </div>

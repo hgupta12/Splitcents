@@ -7,7 +7,7 @@ import { useOutletContext } from "react-router-dom"
 import { db,user } from "../../firebase";
 
 
-export default function AddExpenses(){
+export default function AddExpenses(props){
     const uid=user
     const [amout,setAmount]=useState(0)
     const [description,setDescription]=useState("")
@@ -19,11 +19,13 @@ export default function AddExpenses(){
     const [addMemberInput,setAddMemberInput]=useState("")
     const [addMembersResult,setAddMembersResult]=useState([])
     const [selectedToAddMembersList,setSelectedToAddMembersList]=useState([])
-    let [ group, setGroup ] = useOutletContext()
-
+    //let [ group, setGroup ] = useOutletContext()
+    const group=props.group
     //const m=[{id:'a',name:'a'},{id:'abc',name:'abc'},{id:'ab',name:'ab'},{id:'abcde',name:'abcde'}]
     const [m1,setMabc]=useState({})
-    const [info,setInfo]=useState({})
+    const [m2,setMabcd]=useState({})
+    const [info,setInfo]=useState(group)
+    const [loading,setLoading]=useState(true)
     /*
     useEffect(()=>{
         const getGroup=async()=>{
@@ -43,24 +45,27 @@ export default function AddExpenses(){
           };
           getGroup();
     },[])*/
-    useEffect(()=>{
-        setInfo(group)
-    },[group])
+
     useEffect(()=>{const getUser=async()=>{
-        try{    const userDocs=await Promise.all(info.members.map(k=>getDoc(doc(db,"users",k))))
+        try{  //console.log(props.group)    
+            const userDocs=await Promise.all(info.members.map(k=>getDoc(doc(db,"users",k))))
                 console.log(userDocs,'users')
                 userDocs.map((k)=>{
                     const mt=m1;
-                    mt[k.id]=k.data().name
+                    const mt1=m2;
+                    mt[k.id]=k.data().Name
+                    mt1[k.id]=k.data().profile_pic
+                    setMabcd(mt1)
                     setMabc(mt)
                 })
         console.log(m1,'m1')
+        setLoading(false)
         }catch(err){console.error(err)}
         }
         getUser()
         
 
-    },[info])
+    },[])
     
     function changePayerfunc(inputNew){
         
@@ -118,6 +123,7 @@ export default function AddExpenses(){
 
     function SetNewPayerfunc(k){
         setPayer(k)
+        setNewPayerList([])
         setChangePayer(false)
     }
     async function SubmitExpense(k){
@@ -166,38 +172,55 @@ export default function AddExpenses(){
         */
 
     }
+    if(loading)return<div>loading</div>
     return(
         <>
-        <div>
-                <input placeholder="Description..." onChange={(e)=>setDescription(e.target.value)}/>
-                <input placeholder="Amount..." onChange={(e)=>setAmount(Number(e.target.value))}/>
-                <div>
-                    <h2>Payer : {payer===uid ? <>You</>:m1[payer]}</h2>
-                    <button onClick={()=>setChangePayer(true)}>Change Payer</button>
+        <div className="bg-white rounded-2xl">
+                <h1 className="text-3xl m-4 font-semibold text-center">New Expense</h1>
+                <div className="my-5 mx-6">
+                <label className="text-xl pr-3">Description :</label>
+                <input placeholder="Description..." className=" border-b-2 border-blue-500  outline-none" onChange={(e)=>setDescription(e.target.value)}/>
+                </div>
+                <div className="my-5 mx-6">
+                <label className="text-xl pr-3">Amount :</label>
+                <input placeholder="Amount..." className=" border-b-2 border-blue-500  outline-none " onChange={(e)=>setAmount(Number(e.target.value))}/>
+                </div>
+                <div className="mx-6 my-4">
+                    <div className="text-lg flex items-center space-x-3"><span className="text-xl pr-3">Payer : </span><img className="inline w-20 border-2 border-black rounded-full" src={m2[payer]}/> <span>{m1[payer]}</span>
+                    <button onClick={()=>setChangePayer(true)}><span class="material-icons text-4xl text-blue-500">edit</span></button></div>
                     
                     <ModalChangePayer open={changePayer}>
-                        <input placeholder="New Payer....."onChange={(e)=>changePayerfunc(e.target.value)}/>
-                        <div>{newPayerList.map((k)=>{return(<div><h5>{m1[k]}</h5><button onClick={()=>SetNewPayerfunc(k)}>Set as new Payer</button></div>);})}</div>
+                        <input placeholder="New Payer....." className="border-b-2 border-blue-500  outline-none " onChange={(e)=>changePayerfunc(e.target.value)}/>
+                        <div>{newPayerList.map((k)=>{return(<div className="text-lg flex items-center space-x-3 my-3"><img className="inline w-20 border-2 border-black rounded-full" src={m2[k]}/><h5>{m1[k]}</h5><button onClick={()=>SetNewPayerfunc(k)}><span class="material-icons text-4xl text-blue-500 ">swap_horiz</span></button></div>);})}</div>
                     </ModalChangePayer>
                 </div>
-                <div>
-                    <h2>Added Members</h2>
+                <div className="grid grid-cols-2 justify-items-center">
                     
+                    <div className="flex flex-col justify-items-center mx-16">
+                        
+                    <div onClick={()=>setAddMember(true)} className="text-xl underline text-blue-500 mb-10 mt-5 text-center">Select Member</div>
+                        
+                    
+                    <ModalAddMember open={addMember}>
+                        <lable className="text-lg pr-3">Member Name :</lable>
+                        <input placeholder="New Member....." className=" border-b-2 border-blue-500  outline-none " value={addMemberInput} onChange={(e)=>addMemberfunc(e.target.value)}/>
+                        <div className="ml-5">
+                            {addMembersResult.map((k)=>{return(<div className="flex items-center my-2 space-x-6"><img className="inline w-20 border-2 rounded-full" src={m2[k]}/><div className="text-lg">{m1[k]}</div><button onClick={()=>AddMembersToList(k)}><span class="material-icons text-3xl text-green-400">person_add</span></button></div>);})}
+                        </div>
+                    </ModalAddMember>
+                    
+                    </div>
                     <div>
+                    <h2 className="text-xl underline text-green-500 mb-10 mt-5">Selected Members</h2>
                         <div>
-                        {selectedToAddMembersList.map((k)=>{return(<div><h5>{m1[k]}</h5><button onClick={()=>RemoveFromSelected(k)}>Remove From Selected</button></div>)}) }
+                        {selectedToAddMembersList.map((k)=>{return(<div className="flex items-center space-x-6 my-2"><img className="inline w-20 border-2 rounded-full" src={m2[k]}/><h5 className="text-lg">{m1[k]}</h5><button onClick={()=>RemoveFromSelected(k)}><span class="material-icons text-3xl text-red-400">person_remove</span></button></div>)}) }
 
                         </div>
                     </div>
-                    <button onClick={()=>setAddMember(true)}>Select Member</button>
-                    <ModalAddMember open={addMember}>
-                        <input placeholder="New Member....." value={addMemberInput} onChange={(e)=>addMemberfunc(e.target.value)}/>
-                        <div>
-                            {addMembersResult.map((k)=>{return(<div><h5>{m1[k]}</h5><button onClick={()=>AddMembersToList(k)}>Add Member</button></div>);})}
-                        </div>
-                    </ModalAddMember>
-                    <br></br>
-                    <button onClick={()=>AddFinalExpense()}>Add The Expense To The Group</button>
+                   
+                </div>
+                <div className="flex justify-center m-10">
+                <button onClick={()=>AddFinalExpense()} className="rounded-3xl flex items-center bg-cyan-900 p-2"><span class="material-icons text-4xl text-white">add</span> <span className="text-lg text-white">Add Expense</span></button>
                 </div>
             </div>
             </>
