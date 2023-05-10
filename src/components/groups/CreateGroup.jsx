@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { collection, query,where,getDocs,getDoc,doc,updateDoc, addDoc} from "firebase/firestore";
-import { db,user } from "../../firebase";
+import { db } from "../../firebase";
 import { useState ,useEffect} from "react"
+import { AuthContext } from "../../context/Authcontext"
 
 function CreateGroup(){
-    const user='4h7cUp0PKRQlc2PVsdbfGcL5Lw22'
+    const user = useContext(AuthContext).currentUser.uid
+    
     const [groupName,setGroupName]=useState('')
     const [friends,setFriends]=useState([])
     const [m1,setMabc]=useState({})
@@ -47,7 +49,7 @@ function CreateGroup(){
                     console.log(k.data())
                     const mt=m1;
                     const mt1=m2;
-                    mt[k.id]=k.data().Name
+                    mt[k.id]=k.data().name
                     mt1[k.id]=k.data().profile_pic
                     setMabc(mt)
                     setMabcd(mt1)

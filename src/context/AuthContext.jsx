@@ -3,6 +3,7 @@ import AuthReducer from './AuthReducer';
 
 const INITIAL_STATE = {
   currentUser: JSON.parse(localStorage.getItem("user")),
+  userName: localStorage.getItem("userName")
 };
 
 export const AuthContext = createContext(INITIAL_STATE);
@@ -11,9 +12,9 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
   useEffect(() => {
-   // alert("hello")
-    localStorage.setItem("user",JSON.stringify(state.currentUser));
-  }, [state.currentUser]);
+    localStorage.setItem("user",JSON.stringify(state.currentUser))
+    localStorage.setItem("userName", state.userName)
+  }, [state]);
 
   return (
     <AuthContext.Provider value={{ currentUser: state.currentUser, dispatch }}>

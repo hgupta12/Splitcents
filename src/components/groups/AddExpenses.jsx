@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import {Timestamp, doc, getDoc,collection, addDoc, updateDoc} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import ModalChangePayer from "./ModalChangePayer";
 import ModalAddMember from "./ModalAddMembers";
 import { useOutletContext } from "react-router-dom"
-import { db,user } from "../../firebase";
+import { db } from "../../firebase";
+import { AuthContext } from '../../context/Authcontext';
 
 
-export default function AddExpenses(props){
-    const uid=user
+export default function AddExpenses(){
+    const uid = useContext(AuthContext).currentUser.uid
+    
     const [amout,setAmount]=useState(0)
     const [description,setDescription]=useState("")
     const [payer,setPayer]=useState(uid)
@@ -53,7 +55,7 @@ export default function AddExpenses(props){
                 userDocs.map((k)=>{
                     const mt=m1;
                     const mt1=m2;
-                    mt[k.id]=k.data().Name
+                    mt[k.id]=k.data().name
                     mt1[k.id]=k.data().profile_pic
                     setMabcd(mt1)
                     setMabc(mt)

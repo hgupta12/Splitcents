@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
-import { db, user } from "../../firebase";
+import { db } from "../../firebase";
 import {Timestamp, doc, getDoc,collection} from "firebase/firestore";
 import History from "./History";
 import Transact from "./Transact";
 import M1 from "./ModalTransact";
+import { AuthContext } from "../../context/Authcontext";
 
 function Dues (props) {
     //let [ group, setGroup ] = useOutletContext()
     var filteredGroupData=""
     const group=props.group
-    const usid=user
+    const usid = useContext(AuthContext).currentUser.uid
     const [info,setInfo]=useState(group.graph[usid]);
     const [loading,setLoading]=useState(true)
     const [m1,setMabc]=useState({})
@@ -36,7 +37,7 @@ function Dues (props) {
                 userDocs.map((k)=>{
                     const mt=m1;
                     const mt1=m2;
-                    mt[k.id]=k.data().Name
+                    mt[k.id]=k.data().name
                     mt1[k.id]=k.data().profile_pic
                     setMabc(mt)
                     setMabcd(mt1)

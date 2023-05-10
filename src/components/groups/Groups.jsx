@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react"
-import { db, user } from '../../firebase'
+import React, { useContext, useEffect, useState } from "react"
+import { db } from '../../firebase'
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { useNavigate } from "react-router-dom"
 
 import GroupCard from './ui/GroupCard'
+import { AuthContext } from "../../context/Authcontext"
 
 export default function Groups () {
+    const user = useContext(AuthContext).currentUser.uid
+
     const navigate=useNavigate();
     let [ groups, setGroups ] = useState([])
     let [ loading, setLoading ] = useState(true)

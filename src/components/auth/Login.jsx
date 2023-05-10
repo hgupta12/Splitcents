@@ -23,17 +23,16 @@ const handleLogin = async (e) => {
       password
     );
 
-    const authUser = userCredential.user;
+    const authUser = userCredential.user
 
     const docRef = doc(db, "users", authUser.uid);
     const docSnap = await getDoc(docRef);
     const matchingUser = docSnap.data();
 
     if (matchingUser) {
-      const name = matchingUser.Name;
+      const name = matchingUser.name;
 
       dispatch({ type: "LOGIN", payload: { user: authUser, name: name } });
-      navigate("/");
     }
   } catch (error) {
     console.log(error);
@@ -48,9 +47,7 @@ const signup=() =>{
  const handleLoginWithGoogle= async ()=>{
 await signInWithPopup(auth,provider).then((userCredential)=>{
 const user = userCredential.user;
-       dispatch({type:"LOGIN", payload:user});
-       navigate("/");
-       console.log(userCredential.user);
+       dispatch({type:"LOGIN", payload: { user: user, name: user.displayName }})
 }).catch((err)=>{
       console.log(err.message);
     });

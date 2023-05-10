@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
-import { db,user } from '../../firebase'
+import { db } from '../../firebase'
 
 
 export default function History (props) {

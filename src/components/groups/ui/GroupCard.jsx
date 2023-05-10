@@ -1,9 +1,9 @@
-import React from "react"
-import { user } from "../../../firebase"
+import React, { useContext } from "react"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../../context/Authcontext"
 
 export default function GroupCard ({ id, name, graph}) {
-
+    let user = useContext(AuthContext).currentUser.uid
 
     let due
     if (!graph[user])
@@ -27,3 +27,4 @@ export default function GroupCard ({ id, name, graph}) {
         </div>
     )
 }
+

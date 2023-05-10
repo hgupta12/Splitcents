@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useOutletContext, useParams } from "react-router-dom"
 import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
+import { AuthContext } from "../../context/Authcontext"
+
 
 export default function Transact (props) {
+    
     /*
     let [ group, setGroup ] = useOutletContext()
     let [ member, setMember ] = useState({})

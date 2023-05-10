@@ -15,6 +15,5 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig)
 export let db = getFirestore(app)
-export let user = "4h7cUp0PKRQlc2PVsdbfGcL5Lw22"
 export const auth=getAuth(app);
 export const provider=new GoogleAuthProvider();
