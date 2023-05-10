@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { addDoc, collection, endAt, getCountFromServer, getDocs, limit, orderBy, query, startAt, where } from 'firebase/firestore'
-import { db, user } from '../../firebase'
+import { db } from '../../firebase'
+import { AuthContext } from '../../context/AuthContext'
 
 export default function AddFriend () {
+    let user = useContext(AuthContext).currentUser.user.uid
+    
     const [ email, setEmail ] = useState("")
     const [ result, setResult ] = useState([])
     const [ reqSent, setReqSent ] = useState([])
@@ -32,7 +35,7 @@ export default function AddFriend () {
             let notFriends = []
 
             for (let i in r)
-                if (friends[i] == 0)
+                if (friends[i] == 0 && r[i].id != user)
                     notFriends.push(r[i])
 
             setResult(notFriends)

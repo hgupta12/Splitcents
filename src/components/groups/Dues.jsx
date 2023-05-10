@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
-import { db, user } from "../../firebase";
+import { db } from "../../firebase";
 import {Timestamp, doc, getDoc,collection} from "firebase/firestore";
+import { AuthContext } from "../../context/AuthContext";
 
 function Dues (props) {
     //let [ group, setGroup ] = useOutletContext()
     var filteredGroupData=""
     const group=props.group
-    const usid=user
+    const usid = useContext(AuthContext).currentUser.user.uid
     const [info,setInfo]=useState(group.graph[usid]);
     const [loading,setLoading]=useState(true)
     const [m1,setMabc]=useState({})

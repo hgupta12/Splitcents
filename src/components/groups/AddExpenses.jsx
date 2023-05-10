@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import {Timestamp, doc, getDoc,collection, addDoc, updateDoc} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import ModalChangePayer from "./ModalChangePayer";
 import ModalAddMember from "./ModalAddMembers";
 import { useOutletContext } from "react-router-dom"
 import { db } from "../../firebase";
+import { AuthContext } from '../../context/Authcontext';
 
 
 export default function AddExpenses(){
-    const uid="Tae2WO34ARrcQowOG8vt"
+    const uid = useContext(AuthContext).currentUser.user.uid
+    
     const [amout,setAmount]=useState(0)
     const [description,setDescription]=useState("")
     const [payer,setPayer]=useState(uid)

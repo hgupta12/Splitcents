@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState ,useEffect} from "react"
 import {useOutletContext} from "react-router-dom"
 import { collection, query,where,getDocs,getDoc,doc,updateDoc} from "firebase/firestore";
-import { db,user } from "../../firebase";
+import { db } from "../../firebase";
+import { AuthContext } from "../../context/Authcontext";
 
 var x4=[];
 export default function AddMember () {
+    const user = useContext(AuthContext).currentUser.user.uid
+    
     const [input,setInput]=useState("");
     const [results,setResult]=useState([]);
     const [selected1,setSelected1]=useState([]);

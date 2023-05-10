@@ -21,8 +21,8 @@ const Signup = () => {
       const currentUser = await createUserWithEmailAndPassword(auth, email, password);
       const docRef = doc(db, "users", currentUser.user.uid);
       await setDoc(docRef, {
-        Name: name,
-        Email: email,
+        name: name,
+        email: email,
         profile_pic: `https://api.dicebear.com/6.x/avataaars/svg?seed=${currentUser.user.uid}`
       });
       dispatch({type:"LOGIN", payload:{user: currentUser.user, name: name}})

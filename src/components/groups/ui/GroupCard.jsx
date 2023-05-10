@@ -1,9 +1,9 @@
-import React from "react"
-import { user } from "../../../firebase"
+import React, { useContext } from "react"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../../context/AuthContext"
 
 export default function GroupCard ({ id, name, graph}) {
-
+    let user = useContext(AuthContext).currentUser.user.uid
 
     let due
     if (!graph[user])

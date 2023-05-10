@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useOutletContext, useParams } from "react-router-dom"
 import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore"
-import { db, user } from "../../firebase"
+import { db } from "../../firebase"
+import { AuthContext } from "../../context/AuthContext"
 
 export default function Transact () {
+    const user = useContext(AuthContext).currentUser.user.uid
+    
     let [ group, setGroup ] = useOutletContext()
     let [ member, setMember ] = useState({})
     let { uid } = useParams()

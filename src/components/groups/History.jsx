@@ -45,7 +45,7 @@ export default function History () {
             {
                 history.map(({ id, type, amount, timestamp }) => {
                     return (
-                        <p key = {id}>{amount} ({type}) - {console.log(timestamp)||(new Date(timestamp.seconds * 1000)).getMonth()}</p>
+                        <p key = {id}>{amount} ({type}) - {(new Date(timestamp.seconds * 1000)).toString()}</p>
                     )
                 })
             }

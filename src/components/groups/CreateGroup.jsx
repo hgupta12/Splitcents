@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { collection, query,where,getDocs,getDoc,doc,updateDoc, addDoc} from "firebase/firestore";
 import { db } from "../../firebase";
 import { useState ,useEffect} from "react"
+import { AuthContext } from "../../context/AuthContext"
 
 function CreateGroup(){
-    const user='tQkhviaGM7HlofjT1QCn'
+    const user = useContext(AuthContext).currentUser.user.uid
+    
     const [groupName,setGroupName]=useState('')
     const [friends,setFriends]=useState([])
     const [m1,setMabc]=useState({})

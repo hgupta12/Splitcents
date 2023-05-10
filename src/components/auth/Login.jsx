@@ -30,7 +30,7 @@ const handleLogin = async (e) => {
     const matchingUser = docSnap.data();
 
     if (matchingUser) {
-      const name = matchingUser.Name;
+      const name = matchingUser.name;
 
       dispatch({ type: "LOGIN", payload: { user: authUser, name: name } });
       navigate("/");
