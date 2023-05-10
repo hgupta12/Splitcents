@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { collection, query,where,getDocs,getDoc,doc,updateDoc, addDoc} from "firebase/firestore";
 import { db } from "../../firebase";
 import { useState ,useEffect} from "react"
+import { AuthContext } from "../../context/Authcontext"
 
 function CreateGroup(){
-    const user='tQkhviaGM7HlofjT1QCn'
+    const user = useContext(AuthContext).currentUser.uid
+    
     const [groupName,setGroupName]=useState('')
     const [friends,setFriends]=useState([])
     const [m1,setMabc]=useState({})
+    const [m2,setMabcd]=useState({})
     const [results,setResult]=useState([]);
     const [selected1,setSelected1]=useState([user]);
     const [input,setInput]=useState("");
+    const [loading,setLoading]=useState(true)
+    const [loading1,setLoading1]=useState(true)
 
     function ChangeGroupName(e){
         setGroupName(e)
@@ -27,7 +32,10 @@ function CreateGroup(){
                         if(k !== user){friends1.push(k)}
                     })
                 })
+                console.log(friends1)
                 setFriends(friends1);
+                setLoading1(false)
+                
                 //console.log(friends,"f")
                 
             }catch(err){console.log(err)}
@@ -36,31 +44,59 @@ function CreateGroup(){
     },[])
     useEffect(()=>{const getUser=async()=>{
         try{    const userDocs=await Promise.all(friends.map(k=>getDoc(doc(db,"users",k))))
-                //console.log(userDocs,'users')
+                
                 userDocs.map((k)=>{
+                    console.log(k.data())
                     const mt=m1;
+                    const mt1=m2;
                     mt[k.id]=k.data().name
+                    mt1[k.id]=k.data().profile_pic
                     setMabc(mt)
+                    setMabcd(mt1)
                 })
+                const x3=[];
+        const z=friends
+        
+        z.forEach((k) => {
+            
+                if(m1[k].includes(input) && !(selected1.includes(k)) && k!==user){
+                    x3.push(k);
+                }
+        });
+        setResult(x3);
+        setLoading(false)
         //console.log(m1,'m1')
         }catch(err){console.error(err)}
         }
         getUser()
-    },[friends])
+        
+    },[loading1])
+    /*
+    useEffect(()=>{
+        const f=friends
+        for(const i=0;i<f.length-1;i=i+1){
+            for(const j=0;j<f.length-i-1;j=j+1){
+                if(m1[f[j]]>m1[f[j+1]]){
+                    const nid=f[j];
+                    f[j]=f[j+1]
+                    f[j+1]=nid
+                }
+            }
+        }
+        setFriends(f)
+    },[m1])*/
+
     useEffect(()=>{
         const x3=[];
-        const z=Object.keys(m1)
+        const z=friends
         z.forEach((k) => {
-            if(input === ""){    
-            }
-            else{
+            
                 if(m1[k].includes(input) && !(selected1.includes(k)) && k!==user){
                     x3.push(k);
                 }
-            }
         });
         setResult(x3);
-    },[input])
+    },[input,selected1])
     function changeHandler(input1){
         
         setInput(input1);
@@ -72,7 +108,15 @@ function CreateGroup(){
     }
     function Display123(){
         
-        return(<><h3>Selected Friends</h3><div>{selected1.map((k) => k===user? <p></p>:<div><h5>{m1[k]}</h5><button onClick={()=> removeFromSelected(k)}>Remove friend from selected</button></div>)}</div></>);
+        return(<><h3 className="text-lg justify-center border-b-2 border-green-400 mb-8">Selected Members</h3>
+        <div className="flex p-3 space-x-6 items-center"><img src={m2[user]} className="inline w-20 border-2 rounded-full "/><p className="text-lg">{m1[user]}</p>
+        </div>
+        <div>{selected1.map((k) => k===user? <p></p>:
+            <div className="flex space-x-6 items-center">
+                <img src={m2[k]} className="inline w-20 border-2 rounded-full "/>
+                <h5 className="text-lg">{m1[k]}</h5>
+                <button className="text-4xl text-red-600" onClick={()=> removeFromSelected(k)}><span class="material-icons">person_remove</span></button>
+            </div>)}</div></>);
     }
     function addToSelected(k){
         const x4=selected1
@@ -101,14 +145,41 @@ function CreateGroup(){
         window.location= `/group`
     }
 
-
+    if(loading){return(<div>Loading</div>)}
     return(
-        <><h3>Group Name</h3><input placeholder="Group Name ....." value={groupName} onChange={(e) => ChangeGroupName(e.target.value)} />
-        <h1></h1><button onClick={()=> CreateGroups()}>Create Group</button>
-            <Display123 x4={selected1}/>
-            <input placeholder="Search here.." value={input} onChange={(e)=>changeHandler(e.target.value)} />
-            <div>{results.map((k) =><div><h5>{m1[k]}</h5><button onClick={()=> addToSelected(k)}>Add friend to selected</button></div>)}</div>
+        <><h1 className="text-3xl font-bold text-center mt-5 my-5">New Group</h1>
+        <div className="flex mx-10 mt-8 justify-center">
+            <label className="text-lg">Group Name :</label>
+            <input className="mx-5 border-b-2 border-blue-500 p-2 outline-none" placeholder="Group Name ....." value={groupName} onChange={(e) => ChangeGroupName(e.target.value)} />
+        </div>
+        <div className="flex justify-evenly">
+            <div>
+                <div className="">
+                    <div>
+                    <label className="text-lg">Select Members</label>
+                    <input className="mx-5 border-b-2 border-blue-500 p-2 outline-none my-8" placeholder="Search here.." value={input} onChange={(e) => changeHandler(e.target.value)} />
+                    </div>
+                </div>
+                <div className="mx-10 ">{results.map((k) => 
+                <div className="flex space-x-6 p-3 items-center">
+                    <div>
+                        <img src={m2[k]} className="inline w-20 border-2 rounded-full "/>
+                    </div>
+                    <p>{m1[k]}</p>
+                    <button onClick={() => addToSelected(k)} className="text-4xl text-green-500 ">
+                        <span class="material-icons">person_add</span>
+                    </button></div>)}
+                </div>
+                </div>
+                <div className="my-8  ">
+            <Display123 x4={selected1} />
+            </div>
+            </div>
             
+        
+        <div className="text-center my-5">
+            <button className="felx items-center text-lg bg-cyan-900 px-3 py-1 font-sans rounded-lg text-white text-center" onClick={()=> CreateGroups()}><span class="material-icons pr-3">groups</span><span>Create Group</span></button>   
+        </div>
         </>
     )
 }

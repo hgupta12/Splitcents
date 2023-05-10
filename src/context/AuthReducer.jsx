@@ -1,5 +1,4 @@
 const AuthReducer = (state, action) => {
- // alert("HI?")
     switch (action.type) {
       case "LOGIN": {
         return {
