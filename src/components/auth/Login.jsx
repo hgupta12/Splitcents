@@ -4,7 +4,7 @@ import {auth,provider,db} from '../../firebase.js';
 import { useContext,useState } from 'react';
 import { useNavigate,Navigate } from 'react-router-dom';
 import { AuthContext } from '../../context/Authcontext.jsx';
-import {doc,getDoc} from "firebase/firestore";
+import {doc,setDoc,getDoc} from "firebase/firestore";
 const Login = () => {
   
   const [error, setError] = useState(false);
@@ -44,13 +44,20 @@ const signup=() =>{
   navigate('/signup');
 }
 
- const handleLoginWithGoogle= async ()=>{
-await signInWithPopup(auth,provider).then((userCredential)=>{
-const user = userCredential.user;
-       dispatch({type:"LOGIN", payload: { user: user, name: user.displayName }})
-}).catch((err)=>{
+const handleLoginWithGoogle= async ()=>{
+  try{
+ const currentUser=await signInWithPopup(auth,provider);
+const docRef = doc(db, "users", currentUser.user.uid);
+await setDoc(docRef, {
+  name: currentUser.user.displayName,
+  email:currentUser.user.email,
+  profile_pic: currentUser.user.photoURL
+});
+       dispatch({type:"LOGIN", payload:currentUser.user});
+       console.log(currentUser.user);
+}catch(err){
       console.log(err.message);
-    });
+    };
   };
 
   return (
