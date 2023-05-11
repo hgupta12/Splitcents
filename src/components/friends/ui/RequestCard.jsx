@@ -13,13 +13,23 @@ export default function RequestCard ({ name, load, addFriend, rejectRequest }) {
         alert("request rejected!")
         load()
     }
+    const mystyle={
+        backgroundColor: '#ECFEFF',
+    };
     return (
-        <p>
-            {name}
+        <div className="w-max py-4  shadow-md m py-4 px-4 border-2 rounded-lg m-4 " style={mystyle}>
+        <div classname=" grid grid-cols-3 gap-2 justify-center p-4 " >
+            
+          <span className="font-medium text-2xl">  {name}</span>
             &nbsp;&nbsp;
+            
+           
             <button onClick = {addHandler}>✅</button>
             &nbsp;&nbsp;
-            <button onClick = {rejectHandler}>❌</button>
-        </p>
+           <button onClick = {rejectHandler}>❌</button>
+        </div>
+        </div>
+        
+    
     )
 }
