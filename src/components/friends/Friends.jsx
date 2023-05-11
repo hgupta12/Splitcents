@@ -77,7 +77,7 @@ export default function Friends () {
             {
                 requests.length > 0
                 ?
-                <>
+                <div className="divide-y">
                 
                     <h2 className="font-bold text-2xl ml-4 mt-4  ">Requests</h2>
                     {
@@ -92,7 +92,7 @@ export default function Friends () {
                         )
                     }
                     <hr />
-                </>
+                </div>
                 :
                 null
             }
