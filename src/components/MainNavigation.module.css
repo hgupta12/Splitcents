@@ -1,0 +1,125 @@
+*{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+  }
+  
+  .nav {
+            position: fixed;
+  
+            top: 56px;
+            left: -100%;
+            width: 230px;
+            height: 100vh;
+            background-color:#ECFEFF;
+            transition: all 0.3s ease-in-out;
+  
+        }
+          
+          .navOpen {
+            left: 0;
+          }
+  
+  
+          .menuIcon,
+          .menuIcon::before,
+          .menuIcon::after{
+            width:40px;
+            height:5px;
+            border-radius:5px;
+            position:absolute;
+            background-color: white;
+            transition:all 0.5s;
+          }
+          .menuIcon::before{
+            content:"";
+            transform: translate(-20px, -12px);
+  
+          }
+          .menuIcon::after{
+            content:"";
+            transform: translate(-20px, 12px);
+          }
+  
+         .navList{
+            display: flex;
+            align-items: center;
+           
+  width: 218px;
+  height: 38px;
+  border-top-right-radius: 19px;
+            border-bottom-right-radius: 19px;
+  
+          }
+          .navList:hover{
+            background-color: #67E8F9;
+            
+          }
+  
+          .groupElements{
+            padding-left:60px;
+            position:static;
+            height: 38px;
+          }
+          .groupElements:hover{
+            background-color: 
+            #67E8F9;
+            border-top-right-radius: 19px;
+            border-bottom-right-radius: 19px;
+          }
+          .group{
+            left:-100%;
+            display: none;
+            transition: all 0.3s ease-in-out;
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 23px;
+          
+                  
+          }
+         
+          .group.showGrp {
+           
+           display:block;
+           border-bottom-color: #67E8F9;
+           border-bottom-width: 2px;
+         padding-bottom:12px;
+          }
+  
+      .item{
+        font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  
+        margin: 15px;
+       
+      }
+  
+  svg{
+    margin-left: 15px;
+  
+  }
+  li{
+    margin-top: 25px;;
+  }
+  
+  
+  
+  
+  .navfirst{
+  
+  width: 218px;
+  
+    
+  }
+  
+  .grpnav:hover{
+    height: 38px;
+    background-color:  #67E8F9;
+    border-top-right-radius: 19px;
+              border-bottom-right-radius: 19px;
+  }
+  
+  
