@@ -16,6 +16,7 @@ function CreateGroup(){
     const [input,setInput]=useState("");
     const [loading,setLoading]=useState(true)
     const [loading1,setLoading1]=useState(true)
+    const [sortredFriends,setSoretedFriends]=useState([])
 
     function ChangeGroupName(e){
         setGroupName(e)
@@ -32,7 +33,7 @@ function CreateGroup(){
                         if(k !== user){friends1.push(k)}
                     })
                 })
-                console.log(friends1)
+                
                 setFriends(friends1);
                 setLoading1(false)
                 
@@ -46,7 +47,7 @@ function CreateGroup(){
         try{    const userDocs=await Promise.all(friends.map(k=>getDoc(doc(db,"users",k))))
                 
                 userDocs.map((k)=>{
-                    console.log(k.data())
+                    
                     const mt=m1;
                     const mt1=m2;
                     mt[k.id]=k.data().name
@@ -54,42 +55,36 @@ function CreateGroup(){
                     setMabc(mt)
                     setMabcd(mt1)
                 })
-                const x3=[];
-        const z=friends
-        
-        z.forEach((k) => {
-            
-                if(m1[k].includes(input) && !(selected1.includes(k)) && k!==user){
-                    x3.push(k);
-                }
-        });
-        setResult(x3);
-        setLoading(false)
+        const friends2=friends
+        friends2.sort((a,b)=>{m1[a]>m1[b]?-1:1})
+        console.log(friends2)
+        setSoretedFriends(friends2)
         //console.log(m1,'m1')
         }catch(err){console.error(err)}
         }
         getUser()
         
     },[loading1])
-    /*
     useEffect(()=>{
-        const f=friends
-        for(const i=0;i<f.length-1;i=i+1){
-            for(const j=0;j<f.length-i-1;j=j+1){
-                if(m1[f[j]]>m1[f[j+1]]){
-                    const nid=f[j];
-                    f[j]=f[j+1]
-                    f[j+1]=nid
+        const x3=[];
+        const z=sortredFriends
+        console.log(sortredFriends)
+        z.map((k) => {
+            
+                if(k!==user){
+                    x3.push(k);
                 }
-            }
-        }
-        setFriends(f)
-    },[m1])*/
+        });
+        setResult(x3);
+        
+        
+        setLoading(false)
+    },[sortredFriends])
 
     useEffect(()=>{
         const x3=[];
-        const z=friends
-        z.forEach((k) => {
+        const z=sortredFriends
+        z.map((k) => {
             
                 if(m1[k].includes(input) && !(selected1.includes(k)) && k!==user){
                     x3.push(k);
@@ -109,11 +104,11 @@ function CreateGroup(){
     function Display123(){
         
         return(<><h3 className="text-lg justify-center border-b-2 border-green-400 mb-8">Selected Members</h3>
-        <div className="flex p-3 space-x-6 items-center"><img src={m2[user]} className="inline w-20 border-2 rounded-full "/><p className="text-lg">{m1[user]}</p>
+        <div className="flex p-3 space-x-6 items-center"><img src={m2[user]} className="inline w-12 border-2 rounded-full "/><p className="text-lg">{m1[user]}</p>
         </div>
-        <div>{selected1.map((k) => k===user? <p></p>:
+        <div className="max-h-72 overflow-y-auto">{selected1.map((k) => k===user? <p></p>:
             <div className="flex space-x-6 items-center">
-                <img src={m2[k]} className="inline w-20 border-2 rounded-full "/>
+                <img src={m2[k]} className="inline w-12 border-2 rounded-full "/>
                 <h5 className="text-lg">{m1[k]}</h5>
                 <button className="text-4xl text-red-600" onClick={()=> removeFromSelected(k)}><span class="material-icons">person_remove</span></button>
             </div>)}</div></>);
@@ -145,7 +140,7 @@ function CreateGroup(){
         window.location= `/group`
     }
 
-    if(loading){return(<div>Loading</div>)}
+    if(loading && loading1){return(<div>Loading</div>)}
     return(
         <><h1 className="text-3xl font-bold text-center mt-5 my-5">New Group</h1>
         <div className="flex mx-10 mt-8 justify-center">
@@ -160,10 +155,10 @@ function CreateGroup(){
                     <input className="mx-5 border-b-2 border-blue-500 p-2 outline-none my-8" placeholder="Search here.." value={input} onChange={(e) => changeHandler(e.target.value)} />
                     </div>
                 </div>
-                <div className="mx-10 ">{results.map((k) => 
+                <div className="mx-10 max-h-96 overflow-y-auto">{results.map((k) => 
                 <div className="flex space-x-6 p-3 items-center">
                     <div>
-                        <img src={m2[k]} className="inline w-20 border-2 rounded-full "/>
+                        <img src={m2[k]} className="inline w-12 border-2 rounded-full "/>
                     </div>
                     <p>{m1[k]}</p>
                     <button onClick={() => addToSelected(k)} className="text-4xl text-green-500 ">

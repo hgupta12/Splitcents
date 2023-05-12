@@ -13,7 +13,7 @@ export default function GroupCard ({ id, name, graph}) {
     
 
     return (
-        <div className="mx-12 mr-96 mt-3 mb-1 border-b-2 border-blue-500 flex justify-between">
+        <div className="mx-12 mr-36 mt-3 mb-1 border-b-2 border-blue-500 flex justify-between">
             <Link to={`/group/${id}`}>
                 <h3 className="p-3 pb-5  text-xl">
                     {name}

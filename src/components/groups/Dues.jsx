@@ -60,9 +60,10 @@ function Dues (props) {
         
          <><div className="flex space-x-6 mx-10 pb-10 border-b-2 border-blue-400 px-10">
             {Object.keys(info).map(ele =>info[ele]>0 ? 
-                <div className="border-2 bg-blue-400 grid justify-items-center rounded-b-3xl rounded-t-xl">
-                <img src={m2[ele]} className="inline w-20 bg-white items-center rounded-full mt-1"/>
-                <h2 className="text-lg text-white p-1">You owe {m1[ele]}</h2>
+                <div className="border-2 bg-blue-400 grid justify-items-center rounded-b-3xl rounded-t-3xl">
+                <img src={m2[ele]} className="m-3 inline w-20 bg-white items-center rounded-full mt-1"/>
+                <h2 className="text-lg text-white p-1">You owe</h2>
+                <span className="text-lg text-white p-1">{m1[ele]}</span>
                 <h2 className="text-blue-800 px-2 text-xl">{info[ele]}</h2>
                 <button onClick={()=>{setMem(ele);setOpen(true)}} >Pay</button></div>:<p></p>)
             }

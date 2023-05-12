@@ -8,7 +8,6 @@ import { AuthContext } from "../../context/Authcontext"
 
 export default function Groups () {
     const user = useContext(AuthContext).currentUser.uid
-
     const navigate=useNavigate();
     let [ groups, setGroups ] = useState([])
     let [ loading, setLoading ] = useState(true)

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { auth, db } from '../../firebase'
+import { AuthContext } from "../../context/Authcontext"
 
 
 export default function History (props) {
@@ -12,6 +13,7 @@ export default function History (props) {
     const m2=props.m2
     const [loading,setLoading]=useState(true)
     const month=['','Jan',"Feb","Mar","Apr","May","Jun","July","Aug","Sept","Oct","Nov","Dec"] 
+    const user=useContext(AuthContext).currentUser.uid
     useEffect(() => {
         (async function () {
             if (!group.id) return 
@@ -42,8 +44,6 @@ export default function History (props) {
         })()
         
     }, [])
-    let flag=0
-    let pflag=0
     return (
         <>  
             
@@ -54,8 +54,13 @@ export default function History (props) {
                     return (
                         <div key = {k.id} className="flex justify-between mx-16 border-b-2 border-blue-400 py-3">
                             <div className="flex items-center space-x-6">
-                                <span>{k.type==="expense"?<span class="material-icons text-3xl">groups</span>:<span class="material-icons text-3xl">payments</span>}</span>
-                                <div className="text-2xl">{k.type==="expense"?k.description:""}</div> 
+                                <span>{k.type==="expense"?<span class="material-icons text-3xl">groups</span>:<span className="material-icons text-3xl">payments</span>}</span>
+                                <div className="felx items-center w-20">
+                                    <div className="text-3xl text-green-500"><span className="material-icons md-36 text-green-400">currency_rupee</span>{k.amount}</div>
+                                    <div className="text-lg">{k.type==="expense"?k.description:""}</div> 
+                                </div>
+                                
+                                
                                 <div><img src={m2[k.payer_id]} className="inline w-16 border-2 rounded-full "/><div className="text-xl">{m1[k.payer_id]}</div> </div> 
                                 <span class="material-icons text-4xl text-black">trending_flat</span>
                                     {/*k.type==="expense"?<div>
@@ -71,25 +76,21 @@ export default function History (props) {
                                         <p className="text-xl">{m1[k.payee_id]}</p>
                                         </div>
                                         </>
-                                    }   
-                                <div className="text-3xl text-green-500"><span class="material-icons md-36 text-green-400">currency_rupee</span>{k.amount}</div>
+                                    }  
+                                     
                                 {k.type==="expense"?
-                                    k.participants.map(i=>{
-                                        i.id===user?flag++:null
-                                    })
+                                    k.participants.includes(user)||k.payer_id===user?
+                                    <p className="text-blue-500">You are included</p>:<p>{null}</p>
                                     :
                                     null
                                 }
-                                {flag!==pflag?
-                                    <p className="text-blue-500">You are included</p>:<p>{null}</p>
-                                }
-                                <div className="invisible">{pflag=flag}</div>
+                                
                             
                             </div> 
-                        <div className="flex flex-col mr-10">
-                            <div className="text-lg">{month[(new Date(k.timestamp.seconds * 1000)).getMonth()]}</div>
-                            <div className="text-2xl">{(new Date(k.timestamp.seconds * 1000)).getDate()}</div> 
-                            <div className="text-lg">{(new Date(k.timestamp.seconds * 1000)).getFullYear()}</div>
+                        <div className="flex flex-col items-center mr-10">
+                            <div className="text-lg font-semibold">{month[(new Date(k.timestamp.seconds * 1000)).getMonth()]}</div>
+                            <div className="text-2xl font-bold">{(new Date(k.timestamp.seconds * 1000)).getDate()}</div> 
+                            <div className="text-lg font-semibold">{(new Date(k.timestamp.seconds * 1000)).getFullYear()}</div>
                         </div>
                     </div>
                     )

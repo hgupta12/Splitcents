@@ -8,7 +8,7 @@ import { db } from "../../firebase";
 import { AuthContext } from '../../context/Authcontext';
 
 
-export default function AddExpenses(){
+export default function AddExpenses(props){
     const uid = useContext(AuthContext).currentUser.uid
     
     const [amout,setAmount]=useState(0)
@@ -66,7 +66,7 @@ export default function AddExpenses(){
         const y1=Object.keys(m1);
         y1.forEach((k)=>{
             
-            if(m1[k].includes(addMemberInput) && !(selectedToAddMembersList.includes(k)) && k!==payer){
+            if(k!==payer){
                     addnewinput.push(k)
             }
         });setAddMembersResult(addnewinput)
@@ -82,10 +82,11 @@ export default function AddExpenses(){
         setNewPayer(inputNew)
         
     }
-    const xnew=[]
+    
     
     useEffect(()=>{
         const y=Object.keys(m1)
+        const xnew=[]
         y.map((k)=>{
         if(m1[k].includes(newPayer) && k!==payer && !(selectedToAddMembersList.includes(k))){xnew.push(k)}
     })
@@ -178,7 +179,7 @@ export default function AddExpenses(){
     if(loading)return<div>loading</div>
     return(
         <>
-        <div className="bg-white rounded-2xl">
+        <div className="bg-white rounded-2xl overflow-auto max-h-full">
                 <h1 className="text-3xl m-4 font-semibold text-center">New Expense</h1>
                 <div className="my-5 mx-6">
                 
@@ -189,34 +190,34 @@ export default function AddExpenses(){
                 <input placeholder="Amount..." className=" border-b-2 border-blue-500  outline-none " onChange={(e)=>setAmount(Number(e.target.value))}/>
                 </div>
                 <div className="mx-6 my-4">
-                    <div className="text-lg flex items-center space-x-3"><span className="text-xl pr-3">Payer : </span><img className="inline w-16 border-2 border-black rounded-full" src={m2[payer]}/> <span>{m1[payer]}</span>
+                    <div className="text-lg flex items-center space-x-3"><span className="text-xl pr-3">Payer : </span><img className="inline w-12 border-2 border-black rounded-full" src={m2[payer]}/> <span>{m1[payer]}</span>
                     <button onClick={()=>setChangePayer(true)}><span class="material-icons text-4xl text-blue-500">edit</span></button></div>
                     
                     <ModalChangePayer open={changePayer}>
                         <input placeholder="New Payer....." className="border-b-2 border-blue-500  outline-none " onChange={(e)=>changePayerfunc(e.target.value)}/>
-                        <div>{newPayerList.map((k)=>{return(<div className="text-lg flex items-center space-x-3 my-3"><img className="inline w-16 border-2 border-black rounded-full" src={m2[k]}/><h5>{m1[k]}</h5><button onClick={()=>SetNewPayerfunc(k)}><span class="material-icons text-4xl text-blue-500 ">swap_horiz</span></button></div>);})}</div>
+                        <div>{newPayerList.map((k)=>{return(<div className="text-lg flex items-center space-x-3 my-3"><img className="inline w-12 border-2 border-black rounded-full" src={m2[k]}/><h5>{m1[k]}</h5><button onClick={()=>SetNewPayerfunc(k)}><span class="material-icons text-4xl text-blue-500 ">swap_horiz</span></button></div>);})}</div>
                     </ModalChangePayer>
                 </div>
                 <div className="grid grid-cols-2 justify-items-center">
                     
                     <div className="flex flex-col justify-items-center mx-16">
                         
-                    <div onClick={()=>setAddMember(true)} className="text-xl underline text-blue-500 mb-10 mt-5 text-center">Select Member</div>
+                    <div onClick={()=>setAddMember(true)} className="text-xl underline text-blue-500 mb-5 mt-5 text-center">Select Member</div>
                         
                     
                     <ModalAddMember open={addMember}>
                         
                         <input placeholder="New Member....." className=" border-b-2 border-blue-500  outline-none " value={addMemberInput} onChange={(e)=>addMemberfunc(e.target.value)}/>
-                        <div className="ml-5">
-                            {addMembersResult.map((k)=>{return(<div className="flex items-center my-2 space-x-6"><img className="inline w-16 border-2 rounded-full" src={m2[k]}/><div className="text-lg">{m1[k]}</div><button onClick={()=>AddMembersToList(k)}><span class="material-icons text-3xl text-green-400">person_add</span></button></div>);})}
+                        <div className="ml-5 overflow-auto h-44 mt-1">
+                            {addMembersResult.map((k)=>{return(<div className="flex items-center my-2 space-x-6"><img className="inline w-12 border-2 rounded-full" src={m2[k]}/><div className="text-lg">{m1[k]}</div><button onClick={()=>AddMembersToList(k)}><span class="material-icons text-3xl text-green-400">person_add</span></button></div>);})}
                         </div>
                     </ModalAddMember>
                     
                     </div>
                     <div>
-                    <h2 className="text-xl underline text-green-500 mb-10 mt-5">Selected Members</h2>
-                        <div>
-                        {selectedToAddMembersList.map((k)=>{return(<div className="flex items-center space-x-6 my-2"><img className="inline w-16 border-2 rounded-full" src={m2[k]}/><h5 className="text-lg">{m1[k]}</h5><button onClick={()=>RemoveFromSelected(k)}><span class="material-icons text-3xl text-red-400">person_remove</span></button></div>)}) }
+                    <h2 className="text-xl underline text-green-500 mb-5 mt-5">Selected Members</h2>
+                        <div className="overflow-auto h-56">
+                        {selectedToAddMembersList.map((k)=>{return(<div className="flex items-center space-x-6 my-2"><img className="inline w-12 border-2 rounded-full" src={m2[k]}/><h5 className="text-lg">{m1[k]}</h5><button onClick={()=>RemoveFromSelected(k)}><span class="material-icons text-3xl text-red-400">person_remove</span></button></div>)}) }
 
                         </div>
                     </div>

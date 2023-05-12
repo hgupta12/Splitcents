@@ -53,8 +53,8 @@ await setDoc(docRef, {
   email:currentUser.user.email,
   profile_pic: currentUser.user.photoURL
 });
-       dispatch({type:"LOGIN", payload:currentUser.user});
-       console.log(currentUser.user);
+       dispatch({type:"LOGIN", payload: { user: currentUser.user, name: currentUser.user.displayName }});
+       
 }catch(err){
       console.log(err.message);
     };
