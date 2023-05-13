@@ -1,71 +1,65 @@
-
-
-
-import { useContext, useState } from "react";
-import { auth, db} from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-
-import {doc, setDoc, collection} from 'firebase/firestore';
-import { useNavigate } from "react-router-dom";
-
-import { AuthContext } from "../../context/Authcontext";
-
+import React, { useState } from 'react'
+import {auth,db} from '../../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+import {collection, doc, setDoc} from 'firebase/firestore'
+import { useUser } from '../../context/UserContext'
+import Spinner from '../Spinner'
+import GoogleAuthBtn from './GoogleAuthBtn'
 
 const Signup = () => {
-  const { dispatch } = useContext(AuthContext);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState(null)
+  const [name, setName] = useState(null)
+  const [password, setPassword] = useState(null)
+  const [loading, setLoading] = useState(false);
 
-  const handleAdd = async (e) => {
+  const navigate = useNavigate();
+  const {dispatch} = useUser();
+  const handleSubmit = async (e)=>{
     e.preventDefault();
     try {
-      const currentUser = await createUserWithEmailAndPassword(auth, email, password);
-      const docRef = doc(db, "users", currentUser.user.uid);
-      await setDoc(docRef, {
-        Name: name,
-        Email: email,
-        profile_pic: `https://api.dicebear.com/6.x/avataaars/svg?seed=${currentUser.user.uid}`
-      });
-      dispatch({type:"LOGIN", payload:{user: currentUser.user, name: name}})
-      navigate("/");
-    } catch (err) {
-      console.log(err);
+      setLoading(true);
+      const res = await createUserWithEmailAndPassword(auth, email,password);
+      const user = res.user;
+      const newUser = {
+        uid: user.uid,
+        name,
+        email,
+        profile_pic: `https://api.dicebear.com/6.x/avataaars/svg?seed=${user.uid}`
+      }
+      await setDoc(doc(collection(db, "users"),user.uid), newUser)
+      dispatch({type:"LOGIN",payload: newUser})
+      setLoading(false);
+      navigate('/');
+
+    } catch (error) {
+      setLoading(false)
+      console.log(error);
+      alert(error.message)
     }
-  };
-
-  const login = () =>{
-    navigate('/login');
-   }
-
+  }
 
   return (
-
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-
-<div className="bg-white p-8 rounded-lg shadow-lg ">
-<h2 className="text-2xl font-bold mb-4">SIGN UP </h2>
-    <form  onSubmit={handleAdd}>
-      <div className="mb-4">
-        <input className="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Full Name" type="text"  onChange={(e) => setName(e.target.value)} required/> 
-      </div>
-      <div className="mb-4">
-        <input placeholder="Email" type="email" className="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  onChange={(e) => setEmail(e.target.value)} required/> 
-      </div>
-      <div className="mb-4">
-        <input placeholder="Password" type="password" className="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onChange={(e) => setPassword(e.target.value)} required/> 
-      </div>
-      <div className="flex justify-center" >
-        <button type="submit" className="  bg-green-900 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex items-center focus:outline-none focus:shadow-outline">Signup</button></div>
-        <div className="m-2">Already have an account? <a onClick={login} className="text-blue-500 hover:cursor-pointer 
-        hover:underline">Login</a></div>
-      
-    </form>
+    <div>
+     {loading? <Spinner/> : null } 
+      <form onSubmit={handleSubmit}>
+        <div>
+            <label htmlFor="name">Name</label> <br />
+            <input type="text" name="name"  className='border-solid border-2' onChange={(e)=> setName(e.currentTarget.value)}/>
+        </div>
+        <div>
+          <label htmlFor="email">Email</label><br />
+          <input type="email" name="email" className='border-solid border-2' onChange={(e)=> setEmail(e.currentTarget.value)}/>
+        </div>
+        <div>
+          <label htmlFor="password">Password</label><br />
+          <input type="password" name="password" className='border-solid border-2' onChange={(e)=> setPassword(e.currentTarget.value)}/>
+        </div>
+        <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Sign Up</button>
+      </form>
+      <GoogleAuthBtn setLoading={setLoading}/>
     </div>
-    </div>
-
-  );
+  )
 }
 
-export default Signup;
+export default Signup
