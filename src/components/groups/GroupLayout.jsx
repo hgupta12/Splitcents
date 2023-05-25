@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Outlet, useParams } from "react-router-dom"
+import { Link, Outlet, useParams } from "react-router-dom"
 
 import { db } from "../../firebase"
 import { doc, getDoc } from "firebase/firestore"
@@ -34,13 +34,12 @@ useEffect(()=>{
                     <ModalAddExpenses open={open} onClose={()=>setOpen(false)}>
                         <AddExpenses group={group}/>
                     </ModalAddExpenses>
-                    <button className="mx-2 border-2 p-3 rounded-2xl border-black">Group Memebers</button>
+                    <Link to="members">
+                        <button className="mx-2 border-2 p-3 rounded-2xl border-black">Group Memebers</button>
+                    </Link>
                 </div>
             </div>
             <Dues group={group}></Dues>
-            <Outlet context = {[ group, setGroup ]} />
-            
-            
         </>
     )
 }

@@ -66,7 +66,7 @@ const handlesignout=()=>{
        border
        border-solid
        border-white/0.1
-       border border-solid border-white border-opacity-10
+      border-white border-opacity-10
        h-14
        '>
 
@@ -104,7 +104,7 @@ const handlesignout=()=>{
 </svg>
 </span> 
 
-    <Link  to='/groups'
+    <Link  to='/group'
     className={`${classes.item} ${classes.grp} `}>Groups</Link>
 </div>
     <ul className={`${classes.group} ${showList ? classes.showGrp : ''}`}>
