@@ -5,11 +5,14 @@ import { useContext,useState } from 'react';
 import { useNavigate,Navigate } from 'react-router-dom';
 import { AuthContext } from '../../context/Authcontext.jsx';
 import {doc,setDoc,getDoc} from "firebase/firestore";
+import GoogleAuthBtn from './GoogleAuthBtn.jsx'
+import Spinner from '../Spinner.jsx'
+
 const Login = () => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [loading, setLoading] = useState(false)
-  const {dispatch} = useUser();
+  const {dispatch} = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSubmit = async (e)=>{
     e.preventDefault();

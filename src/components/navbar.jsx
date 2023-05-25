@@ -37,9 +37,7 @@ const handlesignout=()=>{
 }
     
    const { currentUser } = useContext(AuthContext);
- //const uid=currentUser.uid;
-
-    const userId = 'Tae2WO34ARrcQowOG8vt'; // replace with the actual uid
+   const userId = currentUser.uid
 
 
     const [groups, setGroups] = useState([]);
