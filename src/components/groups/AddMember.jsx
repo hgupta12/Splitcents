@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState ,useEffect} from "react"
 import {useOutletContext} from "react-router-dom"
 import { collection, query,where,getDocs,getDoc,doc,updateDoc} from "firebase/firestore";
-import { db,user } from "../../firebase";
+import { db } from "../../firebase";
+import { AuthContext } from "../../context/Authcontext";
 
 var x4=[];
 export default function AddMember () {
+    const user = useContext(AuthContext).currentUser.uid
+    
     const [input,setInput]=useState("");
     const [results,setResult]=useState([]);
     const [selected1,setSelected1]=useState([]);
@@ -130,10 +133,33 @@ export default function AddMember () {
     //const friends=[d1,z1,k1,l1];
     //const friendsNotInGroup=friends.map((user_id)=>());
     return(
-        <><h1></h1><button onClick={()=> addFriendsToGroup(selected1)}>Add Selected Friends</button>
+        <>
+            <h1></h1>
+            <button onClick={()=> addFriendsToGroup(selected1)}>Add Selected Friends</button>
             <Display123 x4={selected1}/>
-            <input placeholder="Search here.." value={input} onChange={(e)=>changeHandler(e.target.value)} />
-            <div>{results.map((k) => info1.members.includes(k) ?  <div><h5>{m1[k]}</h5><p>Already in group</p></div>:<div><h5>{m1[k]}</h5><button onClick={()=> addToSelected(k)}>Add friend to selected</button></div>)}</div>
+            <input 
+                placeholder="Search here.." 
+                value={input} 
+                onChange={(e)=>changeHandler(e.target.value)} 
+            />
+
+            <div>
+                {
+                    results.map((k) => 
+                        info1.members.includes(k) 
+                        ?  
+                            <div>
+                                <h5>{m1[k]}</h5>
+                                <p>Already in group</p>
+                            </div>
+                        :
+                            <div>
+                                <h5>{m1[k]}</h5>
+                                <button onClick={()=> addToSelected(k)}>Add friend to selected</button>
+                            </div>
+                    )
+                }
+            </div>
             
         </>
     );

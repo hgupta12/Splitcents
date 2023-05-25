@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react"
-import { db, user } from "../../firebase"
+import React, { useContext, useEffect, useState } from "react"
+import { db } from "../../firebase"
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore"
 import { Link } from "react-router-dom"
+import { AuthContext } from '../../context/Authcontext'
 
 import FriendCard from './ui/FriendCard'
 import RequestCard from './ui/RequestCard'
 
 
 export default function Friends () {
+    let user = useContext(AuthContext).currentUser.uid
+
     const [ friends, setFriends ] = useState([])
     const [ requests, setRequests ] = useState([])
     const [ loading, setLoading ] = useState(true)
@@ -49,7 +52,6 @@ export default function Friends () {
         setFriends(friendsArray.map(id => userData[id]))
         setRequests(requestsArray.map(req => { return { ...userData[req.from], req_id: req.id } }))
         setLoading(false)
-        console.log("poop")
     }
 
     if (loading) fetchData()
