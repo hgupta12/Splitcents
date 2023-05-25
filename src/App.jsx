@@ -44,19 +44,12 @@ return (
         <Route index element = {<Home />} />
         <Route path = "/group" element = {<Groups />} />
         <Route path='/creategroup' element={<CreateGroup/>} />
-        <Route path = "/group/:gid" element = {<GroupLayout />}>
-          <Route path = "settle">
-            <Route index element = {<Dues />} />
-            <Route path = ":uid" element = {<Transact />} />
-          </Route>
-          <Route path='addexpense'>
-            <Route index element ={<AddExpenses/>}/>
-          </Route>
-          <Route path = "members">
-            <Route index element = {<Members />} />
-            <Route path = "add" element = {<AddMember />} />
-          </Route>
+
+        <Route path = "/group/:gid">
+          <Route index element = {<GroupLayout />} />
+          <Route path = "members" element = {<Members />} />
         </Route>
+        
         <Route path = "/friends">
           <Route index element={<Friends />} />
           <Route path = "add" element={<AddFriend />} />
