@@ -37,7 +37,11 @@ const handlesignout=()=>{
 }
     
    const { currentUser } = useContext(AuthContext);
-   const userId = currentUser.uid
+    let userId
+   if (!currentUser)
+      userId = ""
+   else
+      userId = currentUser.uid
 
 
     const [groups, setGroups] = useState([]);

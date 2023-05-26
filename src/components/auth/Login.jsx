@@ -22,7 +22,7 @@ const Login = () => {
       const user = res.user;
       console.log(user);
       const userSnap = await getDoc(doc(db,"users",user.uid))
-      dispatch({type:"LOGIN",payload: userSnap.data()})
+      dispatch({type:"LOGIN",payload: {user: user, name: userSnap.get("name")}})
       setLoading(false)
       navigate('/');
 

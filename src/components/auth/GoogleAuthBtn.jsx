@@ -1,12 +1,12 @@
 import { signInWithPopup } from 'firebase/auth'
 import { collection ,getDoc,setDoc,doc} from 'firebase/firestore'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from '../../context/UserContext'
 import {auth,db,provider} from '../../firebase'
+import { AuthContext } from '../../context/Authcontext'
 
 const GoogleAuthBtn = ({setLoading}) => {
-    const {dispatch} = useUser();
+    const {dispatch} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleGoogleAuth = async ()=>{
@@ -25,7 +25,7 @@ const GoogleAuthBtn = ({setLoading}) => {
             if(!userSnap.exists()){
                 await setDoc(doc(collection(db,"users"),user.uid), userDetails);
             }
-            dispatch({type:"LOGIN",payload:userDetails})
+            dispatch({type:"LOGIN",payload:{user: userDetails, name: userDetails.name}})
             setLoading(false)
             navigate("/")
         } catch (error) {
