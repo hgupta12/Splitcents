@@ -16,7 +16,6 @@ import CreateGroup from './components/groups/CreateGroup'
 
 // Friends
 import Friends from './components/friends/Friends'
-import AddFriend from './components/friends/AddFriend'
 
 function App() {
   const {currentUser} = useContext(AuthContext);
@@ -42,7 +41,6 @@ return (
         
         <Route path = "/friends">
           <Route index element={<Friends />} />
-          <Route path = "add" element={<AddFriend />} />
         </Route>
       </Route>
 

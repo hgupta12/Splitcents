@@ -6,6 +6,9 @@ import { AuthContext } from '../../context/Authcontext'
 
 import FriendCard from './ui/FriendCard'
 import RequestCard from './ui/RequestCard'
+import UserList from "../../ui/UserList"
+import Requests from "./ui/Requests"
+import AddFriend from "./ui/AddFriend"
 
 
 export default function Friends () {
@@ -21,36 +24,19 @@ export default function Friends () {
         let q2 = query(collection(db, "friend_requests"), where("to", "==", user))
 
         let [ qs1, qs2 ] = await Promise.all([ getDocs(q1), getDocs(q2) ])
-        let uids = new Set()
 
         let friendsArray = qs1.docs.map(doc => {
             let users = doc.data().users
             let otherUser = users[0] == user ? users[1] : users[0]
-            uids.add(otherUser)
 
             return otherUser
         })
 
-        let requestsArray =  qs2.docs.map(doc => {
-            let from = doc.data().from
-            uids.add(from)
+        let requestsArray =  qs2.docs.map(doc => ({ from: doc.get("from"), req_id: doc.id}))
 
-            return { id: doc.id, from }
-        })
 
-        let userPromises = Array.from(uids).map(id => {
-            return getDoc(doc(db, "users", id))  
-        })
-
-        let userDocs = await Promise.all(userPromises)
-        let userData = {}
-
-        for (let i of userDocs) {
-            userData[i.id] = { ...i.data(), id: i.id } 
-        }
-
-        setFriends(friendsArray.map(id => userData[id]))
-        setRequests(requestsArray.map(req => { return { ...userData[req.from], req_id: req.id } }))
+        setFriends(friendsArray)
+        setRequests(requestsArray)
         setLoading(false)
     }
 
@@ -59,48 +45,48 @@ export default function Friends () {
     async function addFriend (req) {
         await deleteDoc(doc(db, "friend_requests", req.req_id))
 
-        let users = [user, req.id]
+        let users = [user, req.from]
         users.sort()
         await addDoc(collection(db, "friendships"), { users })
+        setLoading(true)
     }
 
     async function rejectRequest (req) {
         await deleteDoc(doc(db, "friend_requests", req.req_id))
+        setLoading(true)
     }
 
 
     return (
-        <div>
-            <h1 className="font-bold text-4xl ml-4 mt-4 "> Add Friends <Link to = "/friends/add">+</Link></h1>
-            {loading && "Loading"}
-            
-            {
-                requests.length > 0
-                ?
-                <div className="divide-y">
-                
-                    <h2 className="font-bold text-2xl ml-4 mt-4  ">Requests</h2>
-                    {
-                        requests.map(request => 
-                            <RequestCard 
-                                key = {request.id} 
-                                {...request} 
-                                rejectRequest = {() => rejectRequest(request)}
-                                addFriend = {() => addFriend(request)}
-                                load = {() => setLoading(true)}
-                            /> 
-                        )
-                    }
-                    <hr />
+        <div className="flex">
+            <div className="w-1/2 border-r-2 border-cyan-300">
+                {
+                    requests.length
+                    ?
+                    <div className="border-b-2 border-b-cyan-300">
+                        <h2 className="font-bold text-2xl ml-4 mt-4">Friend Requests</h2>
+                        <Requests
+                            requests = {requests}
+                            load = {() => setLoading(true)}
+                            accept = {addFriend}
+                            reject = {rejectRequest}
+                        />
+                    </div>
+                    :
+                    null
+                }
+                <div>
+                    <h2 className="font-bold text-2xl ml-4 mt-4 ">Friends</h2>
+                    <UserList
+                        users = {friends}
+                    />
+                    {!loading && friends.length == 0 && "Looks like you haven't added any friends yet... send a friend request to get started!"}
                 </div>
-                :
-                null
-            }
-<h2 className="font-bold text-2xl ml-4 mt-4 ">Friends</h2>
-            {friends.map(friend => <FriendCard key = {friend.id} { ...friend} />)}
-
-            {!loading && friends.length == 0 && "Looks like you haven't added any friends yet... send a friend request to get started!"}
-
+            </div>
+            <div className="w-1/2 py-4 px-6">
+                <h2 className="font-bold text-2xl ml-4 mt-4 pb-8">Find Friends</h2>
+                <AddFriend />
+            </div>
         </div>
     )
 }
