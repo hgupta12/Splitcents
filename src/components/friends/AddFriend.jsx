@@ -57,25 +57,36 @@ export default function AddFriend () {
 
         return () => clearTimeout(timer)
     }, [ email ])
+
+    const mystyle={
+        backgroundColor: '#ECFEFF',
+    };
     
     return (
         <div>
-            <p>Enter email ID of the user you would like to add as a friend:</p>
-            <input type="text" placeholder="Email" value = {email} onChange={handler} />
-
+        
+            <div className=" grid grid-rows-2 gap-2 justify-center ">
+           <div><p className="font-bold text-4xl ml-4 mt-4">Add Friend</p></div>
+          <div> <input type="text" className=" ml-4 mt-1 w-max  border rounded-lg py-4 px-4 text-gray-700 border-blue-300 leading-tight focus:outline-none focus:shadow-outline" placeholder="Email of the friend" value = {email} onChange={handler} />
+</div></div>
             {
                 result.map(user => 
-                    <p key = {user.id}>
-                        {user.name} 
+                    <div className=" w-max mx-auto py-4 ">
+                     <div className=" shadow-md border-2 rounded-lg grid grid-cols-2 gap-1 justify-center p-4 font-medium text-xl" key = {user.id} style={mystyle}>
+                    
+                       {user.name} 
                         &nbsp;&nbsp; 
                         {
                             reqSent.includes(user.id)
                             ?
                             "✅"
                             :
-                            <button onClick={() => addFriend(user.id)}>➕</button>
+                           <button  onClick={() => addFriend(user.id)}>➕</button>
                         }
-                    </p>)
+                    
+                    </div>
+                    
+                    </div>)
             }
         </div>
     )

@@ -71,14 +71,15 @@ export default function Friends () {
 
     return (
         <div>
-            <h1>Friends <Link to = "/friends/add">+</Link></h1>
+            <h1 className="font-bold text-4xl ml-4 mt-4 "> Add Friends <Link to = "/friends/add">+</Link></h1>
             {loading && "Loading"}
             
             {
                 requests.length > 0
                 ?
-                <>
-                    <h2>Requests</h2>
+                <div className="divide-y">
+                
+                    <h2 className="font-bold text-2xl ml-4 mt-4  ">Requests</h2>
                     {
                         requests.map(request => 
                             <RequestCard 
@@ -91,11 +92,11 @@ export default function Friends () {
                         )
                     }
                     <hr />
-                </>
+                </div>
                 :
                 null
             }
-
+<h2 className="font-bold text-2xl ml-4 mt-4 ">Friends</h2>
             {friends.map(friend => <FriendCard key = {friend.id} { ...friend} />)}
 
             {!loading && friends.length == 0 && "Looks like you haven't added any friends yet... send a friend request to get started!"}
