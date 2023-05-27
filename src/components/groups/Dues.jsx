@@ -9,7 +9,6 @@ import { AuthContext } from "../../context/Authcontext";
 
 function Dues (props) {
     //let [ group, setGroup ] = useOutletContext()
-    var x=1
     var filteredGroupData=""
     const group=props.group
     const usid = useContext(AuthContext).currentUser.uid
@@ -20,6 +19,7 @@ function Dues (props) {
     const [info1,setInfo1]=useState(group.members)
     const [mem,setMem]=useState('')
     const [open,setOpen]=useState(false)
+    const [emptyDues,setEmptyDues]=useState(true)
     /*
     useEffect(()=>{
         const getGroup=async()=>{
@@ -46,12 +46,14 @@ function Dues (props) {
         
         }catch(err){console.error(err)}
         setInfo1([])
+        var x=true
         Object.keys(info).map((ele)=>{
-            if(info[ele]){
-                x=0;
+            if(info[ele]>0){
+                x=false;
             }
         }
         )
+        setEmptyDues(x);
     }
     getUser()
     setLoading(false)
@@ -62,7 +64,7 @@ function Dues (props) {
     
     //console.log(x,"graph")
     if(loading)return(<div>loading</div>)
-    if(x===1){
+    if(emptyDues){
         return(<><div className="mx-10 pb-10 border-b-2 border-blue-400 px-10 text-xl text-green-500">No Dues</div>
         <History group={group} m1={m1} m2={m2} /></>)
     }
