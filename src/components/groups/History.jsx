@@ -82,7 +82,7 @@ export default function History (props) {
                                     }  
                                      
                                 {k.type==="expense"?
-                                    k.participants.includes(user)||k.payer_id===user?
+                                    k.participants.some(p=> p.id===user)||k.payer_id===user?
                                     <p className="text-blue-500">You are included</p>:<p>{null}</p>
                                     :
                                     null
