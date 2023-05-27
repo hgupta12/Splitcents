@@ -44,6 +44,9 @@ export default function History (props) {
         })()
         
     }, [])
+    if(history.length===0){
+        return<div className="mx-10 py-10 border-b-2 border-blue-400 px-10 text-xl text-blue-500">No Transactions Done Yet</div>
+    }
     return (
         <>  
             

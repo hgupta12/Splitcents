@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/Authcontext";
 
 function Dues (props) {
     //let [ group, setGroup ] = useOutletContext()
+    var x=1
     var filteredGroupData=""
     const group=props.group
     const usid = useContext(AuthContext).currentUser.uid
@@ -45,6 +46,12 @@ function Dues (props) {
         
         }catch(err){console.error(err)}
         setInfo1([])
+        Object.keys(info).map((ele)=>{
+            if(info[ele]){
+                x=0;
+            }
+        }
+        )
     }
     getUser()
     setLoading(false)
@@ -55,6 +62,10 @@ function Dues (props) {
     
     //console.log(x,"graph")
     if(loading)return(<div>loading</div>)
+    if(x===1){
+        return(<><div className="mx-10 pb-10 border-b-2 border-blue-400 px-10 text-xl text-green-500">No Dues</div>
+        <History group={group} m1={m1} m2={m2} /></>)
+    }
     return(
         
         
