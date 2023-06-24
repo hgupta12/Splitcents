@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react"
 import { addDoc, collection, endAt, getCountFromServer, getDocs, limit, orderBy, query, startAt, where } from 'firebase/firestore'
-import { db } from '../../firebase'
-import { AuthContext } from '../../context/Authcontext'
+import { db } from '../../../firebase'
+import { AuthContext } from '../../../context/Authcontext'
+import UserList from "../../../ui/UserList"
+import Input from "../../../ui/Input"
 
 export default function AddFriend () {
     let user = useContext(AuthContext).currentUser.uid
     
     const [ email, setEmail ] = useState("")
     const [ result, setResult ] = useState([])
-    const [ reqSent, setReqSent ] = useState([])
     
     
     function search () {
@@ -28,55 +29,46 @@ export default function AddFriend () {
                 let q = query(collection(db, "friendships"), where("users", "==", friendship))
                 return getCountFromServer(q)
             })
+            let requests1 = r.map(el => {
+                return getCountFromServer(query(collection(db, "friend_requests"), where("from", "==", user), where("to", "==", el.id)))
+            })
+            let requests2 = r.map(el => getCountFromServer(query(collection(db, "friend_requests"), where("from", "==", el.id), where("to", "==", user))))
             
-            friends = await Promise.all(friends)
-            friends = friends.map(doc => doc.data().count)
+            friends = (await Promise.all(friends)).map(doc => doc.data().count)
+            let requests = (await Promise.all([...requests1, ...requests2])).map(doc => doc.data().count)
             
             let notFriends = []
 
             for (let i in r)
-                if (friends[i] == 0 && r[i].id != user)
+                if (requests[i] == 0 && friends[i] == 0 && r[i].id != user)
                     notFriends.push(r[i])
 
             setResult(notFriends)
         })
     }
-    
-    function handler (e) {
-        setEmail(e.target.value)
-    }
 
+    useEffect(search, [ email ])
+    
 
     function addFriend (id) {
         addDoc(collection(db, "friend_requests"), {from: user, to: id})
-        .then(() => setReqSent(old => old + [id]))
+        .then(search)
     }
-
-    useEffect(() => {
-        let timer = setTimeout(search, 1000)
-
-        return () => clearTimeout(timer)
-    }, [ email ])
-    
+ 
     return (
-        <div>
-            <p>Enter email ID of the user you would like to add as a friend:</p>
-            <input type="text" placeholder="Email" value = {email} onChange={handler} />
-
-            {
-                result.map(user => 
-                    <p key = {user.id}>
-                        {user.name} 
-                        &nbsp;&nbsp; 
-                        {
-                            reqSent.includes(user.id)
-                            ?
-                            "✅"
-                            :
-                            <button onClick={() => addFriend(user.id)}>➕</button>
-                        }
-                    </p>)
-            }
+        <div className = "flex flex-col items-stretch gap-4">
+            <Input
+                placeholder = "Search email ID..."
+                setter = {setEmail}
+                debounce = {1500}
+            />
+             
+            <UserList
+                users = {result.map(u => u.id)}
+                selectable = {true}
+                text = "Send friend request?"
+                action = {addFriend}
+            />
         </div>
     )
 }

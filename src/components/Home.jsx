@@ -28,6 +28,16 @@ const handlesignout=()=>{
     </div>
     </>
   )
+/*
+else
+{
+  return(
+    <div className='flex justify-center'>
+<Link to='/login'><button 
+      className='bg-green-700 hover:bg-green-800 text-white-font py-2 px-4 rounded'>Login to continue</button></Link>
+</div>
+)
+}*/
 }
 
 export default Home;
